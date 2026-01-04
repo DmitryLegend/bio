@@ -18,7 +18,7 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* Видео-фон с защитой от рекламы */
+        /* Фоновое видео без рекламы */
         .video-background {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -33,7 +33,7 @@
             width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
             transform: translate(-50%, -50%);
-            filter: brightness(0.3) contrast(1.2);
+            filter: brightness(0.25) contrast(1.2);
         }
 
         #particles-js {
@@ -43,12 +43,11 @@
             z-index: 1;
         }
 
-        /* Экран верификации */
         #verify-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 0, 8, 0.4);
-            backdrop-filter: blur(8px);
+            background: rgba(5, 0, 8, 0.5);
+            backdrop-filter: blur(10px);
             display: flex; justify-content: center; align-items: center;
             z-index: 1000;
             transition: opacity 0.8s ease;
@@ -81,18 +80,16 @@
         .cf-check { color: #c724b1; font-size: 20px; display: none; }
         .cf-text { color: #000; font-family: sans-serif; font-size: 14px; user-select: none; }
 
-        /* Контейнер БИО */
         .container {
             position: relative;
             z-index: 5;
-            width: 90%; max-width: 320px;
-            padding: 40px 20px;
+            width: 90%; max-width: 340px;
+            padding: 40px 25px;
             text-align: center;
             background: rgba(20, 0, 40, 0.5);
             border: 1px solid rgba(199, 36, 177, 0.3);
             border-radius: 20px;
             backdrop-filter: blur(15px);
-            box-shadow: 0 0 60px rgba(106, 0, 244, 0.3);
             display: none;
             opacity: 0;
             transition: opacity 1s ease;
@@ -106,36 +103,29 @@
             filter: blur(15px); z-index: 2; animation: spacePulse 3s infinite alternate; 
         }
         
-        @keyframes spacePulse {
-            0% { transform: scale(0.9); opacity: 0.5; }
-            100% { transform: scale(1.2); opacity: 0.9; }
-        }
+        @keyframes spacePulse { 0% { transform: scale(0.9); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0.8; } }
 
-        h1 { font-size: 14px; color: #e0aaff; text-shadow: 2px 2px #4a0072; margin-bottom: 8px; min-height: 1.2em; white-space: pre; }
-        p { font-size: 8px; color: #c48efd; margin-bottom: 30px; letter-spacing: 1px; }
+        h1 { font-size: 14px; color: #e0aaff; text-shadow: 2px 2px #4a0072; margin-bottom: 8px; }
+        p { font-size: 8px; color: #c48efd; margin-bottom: 30px; }
 
-        /* Плеер */
         .player-container { 
             background: rgba(0, 0, 0, 0.6); 
-            padding: 15px; 
-            border-radius: 15px; 
+            padding: 15px; border-radius: 15px; 
             border: 1px solid rgba(199, 36, 177, 0.2);
         }
         .btn-play { 
             background: linear-gradient(45deg, #6a00f4, #c724b1); 
             border: none; color: white; padding: 12px; width: 100%; 
-            cursor: pointer; font-family: 'Press Start 2P'; font-size: 9px; 
-            margin-bottom: 15px; box-shadow: 0 4px 0 #31004a;
+            cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px; 
+            margin-bottom: 15px;
         }
-        
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #2a1042; outline: none; border-radius: 2px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: #e0aaff; border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px #c724b1; }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #2a1042; outline: none; }
     </style>
 </head>
 <body>
 
     <div class="video-background">
-        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&modestbranding=1&widget_referrer=https://www.google.com" 
+        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&modestbranding=1" 
                 frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
 
@@ -159,7 +149,7 @@
             <div class="fire-glow"></div>
             <img src="myavatar.png" alt="Avatar" class="profile-pic">
         </div>
-        <h1 id="user-name"></h1>
+        <h1>DmitryLegend</h1>
         <p>Developer</p>
 
         <div class="player-container">
@@ -172,10 +162,8 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         const targetTitle = "DmitryLegend";
-        const nameElement = document.getElementById('user-name');
 
-        // Циклическая анимация имени
-        async function runCycle() {
+        async function runTitleCycle() {
             while (true) {
                 let current = Array(targetTitle.length).fill('\u00A0');
                 let revealIndices = Array.from({length: targetTitle.length}, (_, i) => i);
@@ -186,62 +174,45 @@
                     const charIdx = revealIndices.splice(randIdxIdx, 1)[0];
                     current[charIdx] = targetTitle[charIdx];
                     document.title = current.join('');
-                    nameElement.innerText = current.join('');
                     await new Promise(r => setTimeout(r, 150));
                 }
 
-                // 2. Ожидание 3 секунды
                 await new Promise(r => setTimeout(r, 3000));
 
-                // 3. Исчезновение
+                // 2. Исчезновение
                 let hideIndices = Array.from({length: targetTitle.length}, (_, i) => i);
                 while (hideIndices.length > 0) {
                     const randIdxIdx = Math.floor(Math.random() * hideIndices.length);
                     const charIdx = hideIndices.splice(randIdxIdx, 1)[0];
                     current[charIdx] = '\u00A0';
                     document.title = current.join('');
-                    nameElement.innerText = current.join('');
                     await new Promise(r => setTimeout(r, 100));
                 }
-                
-                // Пауза перед новым циклом
+
+                // 3. ПАУЗА С НЕВИДИМЫМ СИМВОЛОМ (чтобы браузер не вставил адрес сайта)
+                document.title = "\u200E"; // Невидимый символ
                 await new Promise(r => setTimeout(r, 500));
             }
         }
-        runCycle();
+        runTitleCycle();
 
-        // Частицы
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 75 },
+                "number": { "value": 70 },
                 "color": { "value": ["#c724b1", "#00bcd4", "#ffffff"] },
                 "shape": { "type": "circle" },
                 "opacity": { "value": 0.5 },
                 "size": { "value": 3 },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#c724b1",
-                    "opacity": 0.3,
-                    "width": 1
-                },
+                "line_linked": { "enable": true, "distance": 150, "color": "#c724b1", "opacity": 0.3, "width": 1 },
                 "move": { "enable": true, "speed": 1.5, "random": true, "out_mode": "out" }
             },
             "interactivity": {
                 "detect_on": "window",
-                "events": {
-                    "onhover": { "enable": true, "mode": "grab" },
-                    "onclick": { "enable": true, "mode": "push" }
-                },
-                "modes": {
-                    "grab": { "distance": 250, "line_linked": { "opacity": 0.8 } },
-                    "push": { "particles_nb": 5 }
-                }
-            },
-            "retina_detect": true
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+                "modes": { "grab": { "distance": 250, "line_linked": { "opacity": 0.8 } }, "push": { "particles_nb": 4 } }
+            }
         });
 
-        // Верификация
         function handleVerify() {
             const spin = document.getElementById('spinner');
             const check = document.getElementById('check-mark');
@@ -249,10 +220,8 @@
             const screen = document.getElementById('verify-screen');
             const main = document.getElementById('main-content');
             const audio = document.getElementById('myAudio');
-
             spin.style.display = 'block';
             txt.innerText = 'Verifying...';
-
             setTimeout(() => {
                 spin.style.display = 'none';
                 check.style.display = 'block';
