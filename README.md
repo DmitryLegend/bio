@@ -1,45 +1,45 @@
-# 🌌 Cosmic Bio Template
+# 🌌 DmitryLegend Bio Project
 
-A stylish, space-themed personal bio page featuring a "Cloudflare-style" verification entrance, animated background particles, and a custom audio player.
+Личный био-сайт с интерактивным музыкальным плеером, динамическим видео-фоном и каскадной анимацией появления.
 
-![Project Status](https://img.shields.io/badge/Status-Active-blueviolet)
-![License](https://img.shields.io/badge/License-MIT-fab)
+---
 
-## ✨ Features
+### 🚀 Технические особенности
 
-* **🕵️ Verification Gate:** A fake "Verify you are human" screen (Cloudflare style) that transitions smoothly into the main profile.
-* **🎨 Cosmic Theme:** Deep purple and neon magenta color palette with a glowing, pulsating avatar effect.
-* **✨ Particle Effects:** Interactive background using `particles.js` with a custom space color scheme.
-* **🎵 Custom Audio Player:**
-    * Auto-looping background music.
-    * Custom play/pause button and seek bar styled to match the theme.
-    * Time progression display.
-* **⌨️ Tab Title Animation:** Typewriter effect for the browser tab title.
+* **Smart Background:** Видео-фон синхронизирован с системой проверки. До подтверждения проигрывается 4-секундный цикл, после — полная версия.
+* **Progressive UI:** Плавное появление основного блока через масштабирование (`scale`) и отложенное проявление кнопок соцсетей.
+* **Interactive Player:** Дуговой прогресс-бар с синхронизированной фиолетовой точкой и неоновым импульсом.
+* **Security Layer:** Интегрированный экран верификации (Cloudflare style) для активации аудиоконтента.
+* **Auto-Refresh:** Система автоматической перезагрузки страницы каждые 9 минут для обновления сессии.
 
-## 🛠️ Installation & Usage
+---
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-    ```
+### 🔗 Связь и Статус
 
-2.  **Add your media:**
-    * Place your profile picture in the root folder and name it `myavatar.png`.
-    * Place your background music file in the root folder and name it `background.mp3`.
+<div align="center">
 
-3.  **Edit `index.html`:**
-    * Open `index.html` in any text editor.
-    * Find the `<h1>` tag to change the username.
-    * Update the `links` section with your own social media URLs (Telegram, Twitch, etc.).
+| Status | Contact |
+| :--- | :--- |
+| **Active** | [**TELEGRAM CONTACT**](https://t.me/DmitryLegend) |
 
-## 🎨 Customization
+</div>
 
-### Changing Colors
-The entire color scheme is defined in the `<style>` section of `index.html`.
-* **Background:** Look for `body` and `#particles-js`.
-* **Accent Colors:** Search for hex codes like `#c724b1` (Magenta) and `#6a00f4` (Deep Purple) to change the glowing effects.
+> [!IMPORTANT]
+> Проект оптимизирован для работы в браузерах с поддержкой аппаратного ускорения видео и JS-анимаций.
 
-### Music Player
-To change the starting volume, find the `handleVerify()` function in the script:
-```javascript
-audio.volume = 0.3; // Change 0.3 to any value between 0.0 and 1.0
+---
+
+### 🛠 Стек технологий
+
+* **Frontend:** HTML5, CSS3 (Animations & Keyframes)
+* **JS Libraries:** Particles.js
+* **Graphics:** FontAwesome 6.0, Google Fonts (Press Start 2P)
+* **Media:** Raw GitHub Storage
+
+---
+
+### 🎨 Визуальный стиль
+Проект выполнен в стиле **Cyberpunk / Space Dark**. Основные цвета:
+* `#050008` — Глубокий черный (фон)
+* `#8a2be2` — Фиолетовый неон (акценты и импульс)
+* `#ff2d95` — Розовый неон (линия прогресса)
