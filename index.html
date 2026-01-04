@@ -7,151 +7,119 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        * { box-sizing: border-box; }
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Press Start 2P', cursive;
             background-color: #050008;
             color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
         }
 
+        /* Единый фон для всех этапов */
         #particles-js {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
             z-index: 1;
             background: linear-gradient(to bottom, #050008 0%, #1a0033 100%);
         }
 
-        /* --- ЭКРАН ВЕРИФИКАЦИИ --- */
+        /* Экран верификации */
         #verify-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #050008; /* Фоновый цвет на случай сбоя видео */
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
+            background: rgba(5, 0, 8, 0.4); /* Полупрозрачный, чтобы видеть частицы */
+            backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
             z-index: 1000;
-            transition: opacity 0.8s ease;
-        }
-
-        /* Видео-фон */
-        .video-container {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .video-bg {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100vw;
-            height: 56.25vw; /* 16:9 ratio */
-            min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 ratio */
-            filter: brightness(0.5) blur(3px);
+            transition: opacity 0.8s ease, visibility 0.8s;
         }
 
         .cf-turnstile-wrapper {
-            position: relative;
             background: #ffffff;
             border-radius: 4px; padding: 0 15px;
             width: 300px; height: 65px; 
             display: flex; align-items: center;
             justify-content: space-between;
             border: 1px solid #d9d9d9;
-            box-shadow: 0 0 30px rgba(199, 36, 177, 0.5);
-            z-index: 1001;
+            box-shadow: 0 0 30px rgba(199, 36, 177, 0.4);
         }
 
-        .cf-content { display: flex; align-items: center; gap: 12px; }
-        
         .cf-checkbox {
-            width: 28px;
-            height: 28px;
+            width: 28px; height: 28px;
             border: 2px solid #c724b1;
             border-radius: 3px;
-            display: flex; justify-content: center; align-items: center; 
-            background: #fff;
-            cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; background: #fff;
         }
 
         .cf-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #c724b1;
-            border-top: 2px solid transparent;
-            border-radius: 50%; 
-            animation: spin 0.8s linear infinite; 
-            display: none;
+            width: 16px; height: 16px;
+            border: 2px solid #c724b1; border-top: 2px solid transparent;
+            border-radius: 50%; animation: spin 0.8s linear infinite; display: none;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .cf-check {
-            color: #c724b1;
-            font-size: 20px; display: none; opacity: 0;
-            transform: scale(0.5); transition: 0.3s;
-        }
-
+        .cf-check { color: #c724b1; font-size: 20px; display: none; }
         .cf-text { color: #000; font-family: sans-serif; font-size: 14px; user-select: none; }
 
-        /* --- ОСНОВНОЙ КОНТЕНТ --- */
+        /* Контент био */
         .container {
             position: relative;
             z-index: 5;
-            width: 90%;
-            max-width: 320px;
+            width: 90%; max-width: 320px;
             padding: 30px 20px;
             text-align: center;
-            background: rgba(20, 0, 40, 0.7);
-            border: 1px solid rgba(199, 36, 177, 0.4);
+            background: rgba(20, 0, 40, 0.6);
+            border: 1px solid rgba(199, 36, 177, 0.3);
             border-radius: 20px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 60px rgba(106, 0, 244, 0.4);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 50px rgba(106, 0, 244, 0.3);
             display: none;
             opacity: 0;
+            transition: opacity 1s ease;
         }
 
-        /* Остальные стили (аватар, ссылки, плеер) остаются из предыдущего сообщения */
         .profile-pic-wrapper { position: relative; width: 100px; height: 100px; margin: 0 auto 15px auto; }
         .profile-pic { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #c724b1; object-fit: cover; position: relative; z-index: 3; }
-        .fire-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(224, 170, 255, 0.9) 0%, rgba(199, 36, 177, 0.7) 40%, transparent 70%); filter: blur(12px); z-index: 2; animation: spacePulse 3s infinite alternate; }
-        @keyframes spacePulse { 0% { transform: scale(0.95); opacity: 0.5; box-shadow: 0 0 20px #6a00f4; } 100% { transform: scale(1.15); opacity: 0.9; box-shadow: 0 0 40px #c724b1, 0 0 20px #00bcd4; } }
-        h1 { font-size: 14px; margin: 10px 0 5px 0; color: #e0aaff; text-shadow: 2px 2px #4a0072; }
-        p { font-size: 8px; color: #c48efd; margin-bottom: 25px; }
-        .links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-        .link-card { display: flex; align-items: center; justify-content: center; padding: 12px; background: rgba(199, 36, 177, 0.1); border: 1px solid rgba(199, 36, 177, 0.2); border-radius: 10px; text-decoration: none; color: white; font-size: 9px; transition: 0.3s; }
-        .link-card:hover { background: rgba(199, 36, 177, 0.3); border-color: #c724b1; color: #e0aaff; transform: scale(1.02); }
-        .player-container { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(199, 36, 177, 0.25); border-radius: 15px; padding: 15px; }
-        .btn-play { background: linear-gradient(45deg, #6a00f4, #c724b1); border: none; color: white; padding: 8px 15px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px; margin-bottom: 15px; box-shadow: 0 4px 0 #31004a; }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(199, 36, 177, 0.2); outline: none; }
+        .fire-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, rgba(224, 170, 255, 0.8) 0%, rgba(199, 36, 177, 0.5) 50%, transparent 70%); filter: blur(12px); z-index: 2; animation: spacePulse 3s infinite alternate; }
+        
+        @keyframes spacePulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 30px #c724b1; }
+        }
+
+        h1 { font-size: 14px; color: #e0aaff; text-shadow: 2px 2px #4a0072; margin: 10px 0; }
+        p { font-size: 8px; color: #c48efd; margin-bottom: 20px; }
+        
+        .links { display: flex; flex-direction: column; gap: 10px; }
+        .link-card {
+            padding: 12px; background: rgba(199, 36, 177, 0.1);
+            border: 1px solid rgba(199, 36, 177, 0.2);
+            border-radius: 10px; text-decoration: none; color: white; font-size: 9px;
+            transition: 0.3s; display: flex; align-items: center; justify-content: center;
+        }
+        .link-card:hover { background: rgba(199, 36, 177, 0.3); transform: translateY(-2px); }
+        .link-card i { margin-right: 8px; }
+
+        .player-container { margin-top: 20px; background: rgba(0, 0, 0, 0.4); padding: 15px; border-radius: 15px; border: 1px solid rgba(199, 36, 177, 0.2); }
+        .btn-play { background: linear-gradient(45deg, #6a00f4, #c724b1); border: none; color: white; padding: 10px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px; width: 100%; margin-bottom: 10px; }
+        
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #331a4d; outline: none; }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: #e0aaff; border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px #c724b1; }
     </style>
 </head>
 <body>
 
-    <div id="verify-screen">
-        <div class="video-container">
-            <iframe class="video-bg" 
-                src="https://www.youtube.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&controls=0&loop=1&playlist=eTD0WWFIDAg&enablejsapi=1&rel=0&iv_load_policy=3" 
-                frameborder="0" allow="autoplay; encrypted-media">
-            </iframe>
-        </div>
+    <div id="particles-js"></div>
 
+    <div id="verify-screen">
         <div class="cf-turnstile-wrapper">
             <div class="cf-content">
-                <div class="cf-checkbox" id="main-check" onclick="handleVerify()">
+                <div class="cf-checkbox" onclick="handleVerify()">
                     <div class="cf-spinner" id="spinner"></div>
                     <i class="fas fa-check cf-check" id="check-mark"></i>
                 </div>
@@ -161,118 +129,11 @@
         </div>
     </div>
 
-    <div id="particles-js"></div>
-
     <div class="container" id="main-content">
         <div class="profile-pic-wrapper">
             <div class="fire-glow"></div>
             <img src="myavatar.png" alt="Avatar" class="profile-pic">
         </div>
-        
         <h1>DmitryLegend</h1>
-        <p>Developer / Schoolboy</p>
-
-        <div class="links">
-            <a href="https://t.me/lie2srvv" class="link-card" target="_blank"><i class="fab fa-telegram"></i> TELEGRAM</a>
-            <a href="https://www.twitch.tv/lie2srvv" class="link-card" target="_blank"><i class="fab fa-twitch"></i> TWITCH</a>
-            <a href="https://lie2srvv.github.io" class="link-card" target="_blank"><i class="fas fa-paint-brush"></i> PAINT</a>
-        </div>
-
-        <div class="player-container">
-            <div class="player-title" style="font-size: 7px; margin-bottom: 10px;">NOW PLAYING: Space_Ambience.mp3</div>
-            <audio id="myAudio" loop><source src="background.mp3" type="audio/mpeg"></audio>
-            <button class="btn-play" onclick="togglePlay()" id="playBtn">PLAY</button>
-            <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        // --- АНИМАЦИЯ ТАЙТЛА ---
-        const targetTitle = "DmitryLegend";
-        let currentTitle = Array(targetTitle.length).fill('\u00A0');
-        let indices = Array.from({length: targetTitle.length}, (_, i) => i);
-
-        function revealTitle() {
-            if (indices.length === 0) return;
-            const randIdx = Math.floor(Math.random() * indices.length);
-            const charIdx = indices.splice(randIdx, 1)[0];
-            currentTitle[charIdx] = targetTitle[charIdx];
-            document.title = currentTitle.join('');
-            setTimeout(revealTitle, 150);
-        }
-        setTimeout(revealTitle, 1000);
-
-        // --- ВЕРИФИКАЦИЯ ---
-        function handleVerify() {
-            const spinner = document.getElementById('spinner');
-            const check = document.getElementById('check-mark');
-            const txt = document.getElementById('verify-txt');
-            const screen = document.getElementById('verify-screen');
-            const main = document.getElementById('main-content');
-            const audio = document.getElementById('myAudio');
-
-            document.getElementById('main-check').onclick = null; // Отключаем повторный клик
-            spinner.style.display = 'block';
-            txt.innerText = 'Verifying...';
-
-            setTimeout(() => {
-                spinner.style.display = 'none';
-                check.style.display = 'block';
-                setTimeout(() => {
-                    check.style.opacity = '1';
-                    check.style.transform = 'scale(1)';
-                    txt.innerText = 'Success!';
-                }, 50);
-
-                setTimeout(() => {
-                    screen.style.opacity = '0';
-                    setTimeout(() => {
-                        screen.style.display = 'none';
-                        main.style.display = 'block';
-                        setTimeout(() => main.style.opacity = '1', 50);
-                        // Попытка запустить аудио (может потребоваться второй клик по кнопке Play)
-                        audio.volume = 0.4;
-                        audio.play().catch(() => console.log("Audio needs manual play"));
-                    }, 800);
-                }, 1000);
-            }, 1500);
-        }
-
-        // --- ЧАСТИЦЫ ---
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 50 },
-                "color": { "value": ["#c724b1", "#6a00f4", "#00bcd4"] },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5 },
-                "size": { "value": 3 },
-                "move": { "enable": true, "speed": 1, "direction": "top" }
-            }
-        });
-
-        // --- ПЛЕЕР ---
-        const audio = document.getElementById('myAudio');
-        const playBtn = document.getElementById('playBtn');
-        const progressBar = document.getElementById('progressBar');
-
-        function togglePlay() {
-            if (audio.paused) {
-                audio.play();
-                playBtn.innerText = "PAUSE";
-            } else {
-                audio.pause();
-                playBtn.innerText = "PLAY";
-            }
-        }
-
-        function seek() {
-            audio.currentTime = (progressBar.value / 100) * audio.duration;
-        }
-
-        audio.ontimeupdate = () => {
-            progressBar.value = (audio.currentTime / audio.duration) * 100;
-        };
-    </script>
-</body>
-</html>
+        <p>Developer / Space Enthusiast</p>
+        <div
