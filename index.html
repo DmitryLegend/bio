@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lie2srvv Bio</title>
+    <title>&nbsp;</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
@@ -28,45 +28,66 @@
             top: 0;
             left: 0;
             z-index: 1;
-            /* Добавляем легкий космический градиент на фон */
             background: linear-gradient(to bottom, #050008 0%, #1a0033 100%);
         }
 
-        /* --- CLOUDFLARE (Стилизация под новую тему) --- */
+        /* --- CLOUDFLARE И ВИДЕО ФОН --- */
         #verify-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #050008; display: flex; justify-content: center; align-items: center;
+            /* background: #050008;  Убираем сплошной фон */
+            display: flex; justify-content: center; align-items: center;
             z-index: 999;
             transition: opacity 0.8s ease;
+            overflow: hidden; /* Важно для видео фона */
+        }
+
+        /* Стили для видео-фона */
+        .video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; /* Помещаем видео ПОЗАДИ формы проверки */
+            pointer-events: none; /* Чтобы видео не перехватывало клики */
+            filter: brightness(0.7) blur(2px); /* Немного затемнить и размыть для лучшей видимости кнопки */
         }
 
         .cf-turnstile-wrapper {
             background: #ffffff;
             border-radius: 4px; padding: 0 15px;
             width: 300px; height: 65px; display: flex; align-items: center;
-            justify-content: space-between; cursor: pointer;
+            justify-content: space-between;
             border: 1px solid #d9d9d9;
+            /* Добавляем легкую тень, чтобы блок выделялся на фоне видео */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .cf-content { display: flex; align-items: center; gap: 12px; }
+        
+        /* Переместили курсор pointer сюда */
         .cf-checkbox {
             width: 28px;
             height: 28px;
-            border: 2px solid #c724b1; /* Маджента */
+            border: 2px solid #c724b1;
             border-radius: 3px;
             display: flex; justify-content: center; align-items: center; background: #fff;
+            cursor: pointer; /* Добавлено для явного указания кликабельности */
         }
         .cf-spinner {
             width: 16px;
             height: 16px;
-            border: 2px solid #c724b1; /* Маджента */
+            border: 2px solid #c724b1;
             border-top: 2px solid transparent;
             border-radius: 50%; animation: spin 0.8s linear infinite; display: none;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .cf-check {
-            color: #c724b1; /* Маджента */
+            color: #c724b1;
             font-size: 20px; display: none; opacity: 0;
             transform: scale(0.5); transition: 0.3s;
         }
@@ -80,13 +101,10 @@
             max-width: 320px;
             padding: 30px 20px;
             text-align: center;
-            /* Полупрозрачный темно-фиолетовый фон */
             background: rgba(20, 0, 40, 0.6);
-            /* Фиолетовая рамка */
             border: 1px solid rgba(199, 36, 177, 0.3);
             border-radius: 20px;
             backdrop-filter: blur(12px);
-            /* Глубокая фиолетовая тень */
             box-shadow: 0 0 50px rgba(106, 0, 244, 0.3);
             display: none;
             opacity: 0;
@@ -109,14 +127,12 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            /* Яркая маджента рамка */
             border: 2px solid #c724b1;
             object-fit: cover;
             position: relative;
             z-index: 3;
         }
 
-        /* --- КОСМИЧЕСКОЕ СВЕЧЕНИЕ (ГРАДИЕНТ) --- */
         .fire-glow {
             position: absolute;
             top: 0;
@@ -124,248 +140,29 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            /* Радиальный градиент: Лаванда -> Маджента -> Прозрачный */
             background: radial-gradient(circle, rgba(224, 170, 255, 0.9) 0%, rgba(199, 36, 177, 0.7) 40%, transparent 70%);
             filter: blur(12px);
             z-index: 2;
             animation: spacePulse 3s infinite alternate;
         }
 
-        /* Анимация мерцания космоса */
         @keyframes spacePulse {
-            0% {
-                transform: scale(0.95);
-                opacity: 0.5;
-                /* Тень: Глубокий фиолетовый */
-                box-shadow: 0 0 20px #6a00f4;
-            }
-            100% {
-                transform: scale(1.15);
-                opacity: 0.9;
-                /* Тень: Яркая маджента и неон-голубой */
-                box-shadow: 0 0 40px #c724b1, 0 0 20px #00bcd4;
-            }
+            0% { transform: scale(0.95); opacity: 0.5; box-shadow: 0 0 20px #6a00f4; }
+            100% { transform: scale(1.15); opacity: 0.9; box-shadow: 0 0 40px #c724b1, 0 0 20px #00bcd4; }
         }
 
         h1 {
-            font-size: 14px;
-            margin: 10px 0 5px 0;
-            /* Светло-лавандовый цвет текста */
-            color: #e0aaff;
-            /* Глубокая фиолетовая тень текста */
-            text-shadow: 2px 2px #4a0072;
+            font-size: 14px; margin: 10px 0 5px 0; color: #e0aaff; text-shadow: 2px 2px #4a0072;
         }
 
         p {
-            font-size: 8px;
-            /* Средне-фиолетовый цвет текста */
-            color: #c48efd;
-            margin-bottom: 25px;
+            font-size: 8px; color: #c48efd; margin-bottom: 25px;
         }
 
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
+        .links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
         .link-card {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            /* Слабый фиолетовый фон и рамка */
-            background: rgba(199, 36, 177, 0.1);
-            border: 1px solid rgba(199, 36, 177, 0.2);
-            border-radius: 10px;
-            text-decoration: none;
-            color: white;
-            font-size: 9px;
-            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; padding: 12px;
+            background: rgba(199, 36, 177, 0.1); border: 1px solid rgba(199, 36, 177, 0.2);
+            border-radius: 10px; text-decoration: none; color: white; font-size: 9px; transition: 0.3s;
         }
-
         .link-card:hover {
-            /* Более яркий фон при наведении */
-            background: rgba(199, 36, 177, 0.3);
-            border-color: #c724b1;
-            color: #e0aaff;
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(199, 36, 177, 0.4);
-        }
-
-        .link-card i {
-            margin-right: 10px;
-            font-size: 14px;
-        }
-
-        /* --- ПЛЕЕР --- */
-        .player-container {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(199, 36, 177, 0.25);
-            border-radius: 15px;
-            padding: 15px;
-        }
-
-        .player-title {
-            font-size: 7px;
-            margin-bottom: 12px;
-            color: #c48efd;
-        }
-
-        .btn-play {
-            /* Градиентная кнопка (Фиолетовый -> Маджента) */
-            background: linear-gradient(45deg, #6a00f4, #c724b1);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-family: 'Press Start 2P';
-            font-size: 8px;
-            margin-bottom: 15px;
-            /* Темно-фиолетовая тень кнопки */
-            box-shadow: 0 4px 0 #31004a;
-            transition: 0.2s;
-        }
-        
-        .btn-play:hover {
-             box-shadow: 0 2px 0 #31004a;
-             transform: translateY(2px);
-        }
-
-        .control-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .control-label, .time-display {
-            font-size: 6px;
-            color: #c48efd;
-        }
-
-        /* СТИЛИЗАЦИЯ ПОЛЗУНКА */
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 4px;
-            background: rgba(199, 36, 177, 0.2);
-            border-radius: 5px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* Chrome/Safari/Edge thumb */
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            /* Светло-лавандовая точка */
-            background: #e0aaff;
-            border-radius: 50%;
-            cursor: pointer;
-            /* Маджента свечение */
-            box-shadow: 0 0 10px #c724b1, 0 0 5px #fff;
-            transition: 0.2s ease-in-out;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.3);
-            background: #ffffff;
-            box-shadow: 0 0 15px #c724b1, 0 0 10px #fff;
-        }
-
-        /* Firefox thumb */
-        input[type="range"]::-moz-range-thumb {
-            width: 12px;
-            height: 12px;
-            background: #e0aaff;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 10px #c724b1, 0 0 5px #fff;
-        }
-    </style>
-</head>
-<body>
-
-    <div id="verify-screen">
-        <div class="cf-turnstile-wrapper" onclick="handleVerify()">
-            <div class="cf-content">
-                <div class="cf-checkbox">
-                    <div class="cf-spinner" id="spinner"></div>
-                    <i class="fas fa-check cf-check" id="check-mark"></i>
-                </div>
-                <div class="cf-text" id="verify-txt">Verify you are human</div>
-            </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55" alt="Cloudflare">
-        </div>
-    </div>
-
-    <div id="particles-js"></div>
-
-    <div class="container" id="main-content">
-        <div class="profile-pic-wrapper">
-            <div class="fire-glow"></div>
-            <img src="myavatar.png" alt="Avatar" class="profile-pic">
-        </div>
-        
-        <h1>lie2srvv</h1>
-        <p>Developer / Schoolboy</p>
-
-        <div class="links">
-            <a href="https://t.me/lie2srvv" class="link-card" target="_blank"><i class="fab fa-telegram"></i> TELEGRAM</a>
-            <a href="https://www.twitch.tv/lie2srvv" class="link-card" target="_blank"><i class="fab fa-twitch"></i> TWITCH</a>
-            <a href="https://lie2srvv.github.io" class="link-card" target="_blank"><i class="fas fa-paint-brush"></i> PAINT</a>
-        </div>
-
-        <div class="player-container">
-            <div class="player-title">NOW PLAYING: Music.exe</div>
-            <audio id="myAudio" loop><source src="background.mp3" type="audio/mpeg"></audio>
-            <button class="btn-play" onclick="togglePlay()" id="playBtn">PAUSE</button>
-            <div class="control-header">
-                <span class="control-label">PROGRESS</span>
-                <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
-            </div>
-            <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        const titleText = "lie2srvv's bio";
-        let currentIndex = 0;
-        let isDeleting = false;
-
-        function animateTitle() {
-            let currentDisplay = titleText.substring(0, currentIndex);
-            document.title = currentDisplay.length === 0 ? "\u200E" : currentDisplay;
-            if (!isDeleting && currentIndex <= titleText.length) {
-                currentIndex++;
-                if (currentIndex > titleText.length) {
-                    isDeleting = true;
-                    setTimeout(animateTitle, 3000);
-                    return;
-                }
-                setTimeout(animateTitle, 200);
-            } else if (isDeleting && currentIndex >= 0) {
-                currentIndex--;
-                if (currentIndex < 0) {
-                    isDeleting = false;
-                    currentIndex = 0;
-                    setTimeout(animateTitle, 500);
-                    return;
-                }
-                setTimeout(animateTitle, 100);
-            }
-        }
-        animateTitle();
-
-        function handleVerify() {
-            const spinner = document.getElementById('spinner');
-            const check = document.getElementById('check-mark');
-            const txt = document.getElementById('verify-txt');
-            const screen = document.getElementById('verify-screen');
-            const main = document.getElementById('main-content');
