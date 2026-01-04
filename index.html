@@ -32,27 +32,26 @@
 
         #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
 
-        /* Синхронный медленный импульс */
-        @keyframes sync-pulse {
-            0% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 5px rgba(255, 255, 255, 0.05); }
-            50% { border-color: rgba(255, 255, 255, 0.4); box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
-            100% { border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 0 5px rgba(255, 255, 255, 0.05); }
+        /* Фиолетовый синхронный импульс */
+        @keyframes sync-purple-pulse {
+            0% { border-color: rgba(138, 43, 226, 0.2); box-shadow: 0 0 5px rgba(138, 43, 226, 0.2); }
+            50% { border-color: rgba(138, 43, 226, 0.7); box-shadow: 0 0 15px rgba(138, 43, 226, 0.5); }
+            100% { border-color: rgba(138, 43, 226, 0.2); box-shadow: 0 0 5px rgba(138, 43, 226, 0.2); }
         }
 
         .container {
             position: relative; z-index: 5;
             width: 95%; max-width: 380px;
             padding: 35px 25px; text-align: center;
-            background: rgba(10, 0, 20, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(10, 0, 20, 0.7);
+            border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 30px;
             backdrop-filter: blur(20px);
             display: none; opacity: 0;
             transition: opacity 1s ease;
-            animation: sync-pulse 6s infinite ease-in-out;
+            animation: sync-purple-pulse 5s infinite ease-in-out;
         }
 
-        /* Идеально ровный плеер */
         .player-wrapper {
             position: relative; width: 220px; height: 220px;
             margin: 0 auto 15px; display: flex; justify-content: center; align-items: center;
@@ -60,7 +59,7 @@
         .progress-ring { position: absolute; transform: rotate(135deg); z-index: 2; }
         
         .progress-ring__circle { 
-            stroke-dasharray: 628.3; /* 2 * PI * 100 */
+            stroke-dasharray: 628.3; 
             stroke-dashoffset: 628.3;
             stroke: #ff2d95; 
             transition: stroke-dashoffset 0.1s linear;
@@ -69,41 +68,42 @@
         .progress-ring__background { 
             stroke: rgba(255, 255, 255, 0.1); 
             stroke-dasharray: 628.3; 
-            stroke-dashoffset: 157; /* 75% круга */
+            stroke-dashoffset: 157; 
         }
 
         .avatar-container { 
             width: 160px; height: 160px; border-radius: 50%; overflow: hidden; 
             border: 4px solid #050008; z-index: 1; 
-            user-select: none;
         }
         .profile-pic { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 
+        /* ФИОЛЕТОВАЯ ТОЧКА */
         .progress-dot { 
-            position: absolute; width: 14px; height: 14px; background: #fff; 
-            border-radius: 50%; box-shadow: 0 0 15px #ff2d95; z-index: 4; 
+            position: absolute; width: 14px; height: 14px; 
+            background: #8a2be2; 
+            border-radius: 50%; box-shadow: 0 0 15px #8a2be2; z-index: 4; 
             left: 50%; top: 50%; pointer-events: none;
-            margin-left: -7px; margin-top: -7px; /* Центрирование */
+            margin-left: -7px; margin-top: -7px; 
+            border: 2px solid #fff; /* Белая обводка для четкости на розовом фоне */
         }
 
         .time-display { font-size: 9px; color: #ffffff; margin: 15px 0; opacity: 0.6; letter-spacing: 2px; }
         h1 { font-size: 14px; margin: 10px 0 5px; color: #fff; text-shadow: 0 0 10px rgba(255,45,149,0.3); }
         .artist { font-size: 8px; color: #c48efd; margin-bottom: 25px; opacity: 0.8; }
 
-        /* Кнопки */
         .social-links { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
         .glass-btn {
             display: flex; align-items: center; justify-content: center; gap: 15px;
             padding: 14px; border-radius: 18px;
-            text-decoration: none; color: #fff; font-size: 9px;
+            text-decoration: none; color: #fff; font-size: 8px;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(138, 43, 226, 0.2);
             transition: 0.3s;
-            animation: sync-pulse 6s infinite ease-in-out;
+            animation: sync-purple-pulse 5s infinite ease-in-out;
         }
         .glass-btn:hover { background: rgba(255, 255, 255, 0.08); transform: scale(1.02); }
-        .glass-btn i { font-size: 18px; color: #c48efd; } /* Обе иконки фиолетовые */
+        .glass-btn i { font-size: 18px; color: #c48efd; }
 
         .play-btn { 
             width: 55px; height: 55px; border-radius: 50%; 
@@ -112,7 +112,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.4); margin: 0 auto;
         }
 
-        /* CF Screen */
         #verify-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(5, 0, 8, 0.98); backdrop-filter: blur(20px);
@@ -182,7 +181,7 @@
             </a>
             <a href="https://g.dev/dm823524" target="_blank" class="glass-btn">
                 <i class="fab fa-google"></i>
-                <span>GOOGLE DEV</span>
+                <span>GOOGLE DEVELOPER</span>
             </a>
         </div>
 
@@ -202,11 +201,26 @@
         const circumference = 2 * Math.PI * radius;
         const arcLength = circumference * 0.75;
 
+        // АНИМАЦИЯ ВКЛАДКИ (ПОЛНОЕ НАПИСАНИЕ)
+        const targetTitle = "DmitryLegend";
+        async function runTitleCycle() {
+            while (true) {
+                for(let i = 0; i <= targetTitle.length; i++) {
+                    document.title = targetTitle.substring(0, i) || "\u200E";
+                    await new Promise(r => setTimeout(r, 200));
+                }
+                await new Promise(r => setTimeout(r, 4000));
+                for(let i = targetTitle.length; i >= 0; i--) {
+                    document.title = targetTitle.substring(0, i) || "\u200E";
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                await new Promise(r => setTimeout(r, 1000));
+            }
+        }
+        runTitleCycle();
+
         function setProgress(percent) {
-            const offset = circumference - (percent / 100 * arcLength);
-            circle.style.strokeDashoffset = offset;
-            
-            // Расчет позиции точки строго по линии
+            circle.style.strokeDashoffset = circumference - (percent / 100 * arcLength);
             const angle = 135 + (percent * 2.7); 
             const x = Math.cos(angle * Math.PI / 180) * radius;
             const y = Math.sin(angle * Math.PI / 180) * radius;
@@ -255,32 +269,15 @@
 
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+                "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#ffffff" },
-                "size": { "value": 4, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ff2d95", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 1.2, "out_mode": "bounce" }
+                "opacity": { "value": 0.2, "random": true },
+                "size": { "value": 2, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#8a2be2", "opacity": 0.1, "width": 1 },
+                "move": { "enable": true, "speed": 1, "out_mode": "bounce" }
             }
         });
         setProgress(0);
-
-        // Анимация названия вкладки
-        const targetTitle = "DmitryLegend";
-        async function runTitleCycle() {
-            while (true) {
-                let current = Array(targetTitle.length).fill(' ');
-                for(let i=0; i<targetTitle.length; i++) {
-                    const rIdx = Math.floor(Math.random() * targetTitle.length);
-                    current[rIdx] = targetTitle[rIdx];
-                    document.title = current.join('');
-                    await new Promise(r => setTimeout(r, 150));
-                }
-                await new Promise(r => setTimeout(r, 3000));
-                document.title = "\u200E";
-                await new Promise(r => setTimeout(r, 1000));
-            }
-        }
-        runTitleCycle();
     </script>
 </body>
 </html>
