@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        /* Блокировка выделения и взаимодействия */
         * { 
             box-sizing: border-box; 
             -webkit-user-drag: none; 
@@ -26,6 +27,7 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* Фон */
         .video-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; overflow: hidden;
@@ -41,6 +43,7 @@
 
         #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; }
 
+        /* Анимации */
         @keyframes sync-purple-pulse {
             0% { border-color: rgba(138, 43, 226, 0.05); box-shadow: 0 0 5px rgba(138, 43, 226, 0.05); }
             50% { border-color: rgba(138, 43, 226, 0.25); box-shadow: 0 0 10px rgba(138, 43, 226, 0.15); }
@@ -57,6 +60,7 @@
             100% { opacity: 1; }
         }
 
+        /* Контейнер */
         .container {
             position: relative; z-index: 5;
             width: 95%; max-width: 380px;
@@ -74,6 +78,7 @@
                        sync-purple-pulse 5s infinite ease-in-out;
         }
 
+        /* Плеер */
         .player-wrapper {
             position: relative; width: 220px; height: 220px;
             margin: 0 auto 15px; display: flex; justify-content: center; align-items: center;
@@ -112,6 +117,7 @@
         h1 { font-size: 14px; margin: 10px 0 5px; color: #fff; }
         .artist { font-size: 8px; color: #c48efd; margin-bottom: 25px; opacity: 0.8; }
 
+        /* Кнопки */
         .social-links { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; opacity: 0; }
         .social-links.show { animation: buttonsFadeIn 0.5s ease 0.4s forwards; }
 
@@ -131,6 +137,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.4); margin: 0 auto;
         }
 
+        /* Верификация */
         #verify-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #050008; z-index: 1000;
@@ -215,24 +222,32 @@
     <script>
         // --- ЗАЩИТА КОНСОЛИ ---
         function protectConsole() {
-            const message = " прсдртя ";
-            const clearAndPrint = () => {
+            const secretMessage = " прсдртя ";
+            const printSecret = () => {
                 console.clear();
-                console.log(`%c${message}`, "color: #8a2be2; font-family: sans-serif; font-size: 40px; font-weight: bold; text-shadow: 0 0 10px #8a2be2;");
+                for (let i = 0; i < 20; i++) {
+                    console.log(`%c${secretMessage}`, "color: #8a2be2; font-family: sans-serif; font-size: 40px; font-weight: bold; text-shadow: 0 0 10px #8a2be2;");
+                }
             };
+
+            // Мониторинг открытия
             setInterval(() => {
                 const threshold = 160;
-                if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
-                    clearAndPrint();
+                const isOpened = (window.outerWidth - window.innerWidth > threshold) || 
+                                 (window.outerHeight - window.innerHeight > threshold);
+                if (isOpened) printSecret();
+            }, 300);
+
+            // Блокировка горячих клавиш
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) {
+                    printSecret();
                 }
-            }, 500);
-            setInterval(() => {
-                (function() { return false; }['constructor']('debugger')['call']());
-                clearAndPrint();
-            }, 1000);
+            });
         }
         protectConsole();
 
+        // Запрет drag-and-drop
         window.ondragstart = function() { return false; };
 
         const audio = document.getElementById('myAudio');
@@ -248,6 +263,7 @@
         let isDragging = false;
         let fadeInterval = null;
 
+        // Плавная громкость
         function fadeAudio(targetVolume, duration, callback) {
             clearInterval(fadeInterval);
             const steps = 20;
@@ -266,6 +282,7 @@
             }, stepDuration);
         }
 
+        // Логика ползунка
         function startDragging(e) {
             isDragging = true;
             fadeAudio(0, 1000, () => { if(isDragging) audio.pause(); });
@@ -312,6 +329,7 @@
             dot.style.transform = `translate(${x}px, ${y}px)`;
         }
 
+        // Верификация
         let isVerified = false;
         video.ontimeupdate = function() {
             if (!isVerified && video.currentTime >= 4) video.currentTime = 0.1;
@@ -358,6 +376,7 @@
             }
         };
 
+        // Частицы
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 30 },
@@ -369,6 +388,7 @@
             }
         });
 
+        // Тайтл
         const targetTitle = "DmitryLegend";
         async function runTitleCycle() {
             while (true) {
