@@ -59,7 +59,7 @@
             display: flex; align-items: center;
             justify-content: space-between;
             border: 1px solid #d9d9d9;
-            box-shadow: 0 0 40px rgba(199, 36, 177, 0.4);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
         }
 
         .cf-checkbox {
@@ -79,45 +79,54 @@
         .cf-check { color: #c724b1; font-size: 20px; display: none; }
         .cf-text { color: #000; font-family: sans-serif; font-size: 14px; user-select: none; }
 
+        /* ИЗМЕНЕННЫЙ КОНТЕЙНЕР С БЕЛЫМ СВЕЧЕНИЕМ */
         .container {
             position: relative;
             z-index: 5;
             width: 90%; max-width: 340px;
             padding: 40px 25px;
             text-align: center;
-            background: rgba(20, 0, 40, 0.5);
-            border: 1px solid rgba(199, 36, 177, 0.3);
+            background: rgba(20, 0, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Более светлая рамка */
             border-radius: 20px;
             backdrop-filter: blur(15px);
             display: none;
             opacity: 0;
             transition: opacity 1s ease;
+            
+            /* БЕЛОЕ СВЕЧЕНИЕ (BOX SHADOW) */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 
+                        0 0 40px rgba(255, 255, 255, 0.1),
+                        inset 0 0 15px rgba(255, 255, 255, 0.05);
         }
 
         .profile-pic-wrapper { position: relative; width: 110px; height: 110px; margin: 0 auto 20px auto; }
-        .profile-pic { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #c724b1; object-fit: cover; position: relative; z-index: 3; }
+        .profile-pic { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #ffffff; object-fit: cover; position: relative; z-index: 3; }
+        
+        /* Пульсация теперь тоже белая для гармонии */
         .fire-glow { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; 
-            background: radial-gradient(circle, rgba(199, 36, 177, 0.8) 0%, transparent 75%); 
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 75%); 
             filter: blur(15px); z-index: 2; animation: spacePulse 3s infinite alternate; 
         }
-        @keyframes spacePulse { 0% { transform: scale(0.9); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0.8; } }
+        @keyframes spacePulse { 0% { transform: scale(0.9); opacity: 0.3; } 100% { transform: scale(1.1); opacity: 0.6; } }
 
-        h1 { font-size: 14px; color: #e0aaff; text-shadow: 2px 2px #4a0072; margin-bottom: 8px; }
-        p { font-size: 8px; color: #c48efd; margin-bottom: 30px; }
+        h1 { font-size: 14px; color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); margin-bottom: 8px; }
+        p { font-size: 8px; color: #e0e0e0; margin-bottom: 30px; }
 
         .player-container { 
-            background: rgba(0, 0, 0, 0.6); 
+            background: rgba(255, 255, 255, 0.05); 
             padding: 15px; border-radius: 15px; 
-            border: 1px solid rgba(199, 36, 177, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .btn-play { 
-            background: linear-gradient(45deg, #6a00f4, #c724b1); 
-            border: none; color: white; padding: 12px; width: 100%; 
+            background: linear-gradient(45deg, #ffffff, #a0a0a0); 
+            border: none; color: black; padding: 12px; width: 100%; 
             cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px; 
             margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #2a1042; outline: none; }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #444; outline: none; }
     </style>
 </head>
 <body>
@@ -131,7 +140,7 @@
 
     <div id="verify-screen">
         <div class="cf-turnstile-wrapper" onclick="handleVerify()">
-            <div class="cf-content">
+            <div style="display: flex; align-items: center; gap: 10px;">
                 <div class="cf-checkbox">
                     <div class="cf-spinner" id="spinner"></div>
                     <i class="fas fa-check cf-check" id="check-mark"></i>
@@ -167,7 +176,6 @@
                 let current = Array(targetTitle.length).fill('\u00A0');
                 let revealIndices = Array.from({length: targetTitle.length}, (_, i) => i);
                 
-                // Появление
                 while (revealIndices.length > 0) {
                     const randIdxIdx = Math.floor(Math.random() * revealIndices.length);
                     const charIdx = revealIndices.splice(randIdxIdx, 1)[0];
@@ -175,10 +183,7 @@
                     document.title = current.join('');
                     await new Promise(r => setTimeout(r, 150));
                 }
-
                 await new Promise(r => setTimeout(r, 3000));
-
-                // Исчезновение
                 let hideIndices = Array.from({length: targetTitle.length}, (_, i) => i);
                 while (hideIndices.length > 0) {
                     const randIdxIdx = Math.floor(Math.random() * hideIndices.length);
@@ -187,7 +192,6 @@
                     document.title = current.join('') === "" ? invisibleChar : current.join('');
                     await new Promise(r => setTimeout(r, 100));
                 }
-
                 document.title = invisibleChar;
                 await new Promise(r => setTimeout(r, 500));
             }
@@ -197,17 +201,12 @@
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 70 },
-                "color": { "value": ["#c724b1", "#ffffff"] },
+                "color": { "value": ["#ffffff", "#aaaaaa"] },
                 "shape": { "type": "circle" },
                 "opacity": { "value": 0.5 },
-                "size": { "value": 3 },
-                "line_linked": { "enable": true, "distance": 150, "color": "#c724b1", "opacity": 0.3, "width": 1 },
-                "move": { "enable": true, "speed": 1.5, "random": true, "out_mode": "out" }
-            },
-            "interactivity": {
-                "detect_on": "window",
-                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
-                "modes": { "grab": { "distance": 250 }, "push": { "particles_nb": 4 } }
+                "size": { "value": 2 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 1.2, "random": true, "out_mode": "out" }
             }
         });
 
