@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-user-drag: none; }
         body {
             margin: 0; padding: 0;
             font-family: 'Press Start 2P', cursive;
@@ -18,6 +18,7 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* Видео фон */
         .video-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none;
@@ -32,41 +33,31 @@
 
         #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
 
-        #verify-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 0, 8, 0.95);
-            backdrop-filter: blur(15px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000; transition: opacity 0.8s ease;
+        /* Анимация импульса */
+        @keyframes pulse-border {
+            0% { border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
+            50% { border-color: rgba(255, 255, 255, 0.8); box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+            100% { border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
         }
 
-        .cf-turnstile-wrapper {
-            background: #ffffff; border-radius: 4px; padding: 0 15px;
-            width: 300px; height: 65px; display: flex; align-items: center;
-            justify-content: space-between; cursor: pointer;
-        }
-        .cf-text { color: #000; font-family: sans-serif; font-size: 14px; user-select: none; }
-        .cf-checkbox { width: 28px; height: 28px; border: 2px solid #ff2d95; border-radius: 3px; display: flex; justify-content: center; align-items: center; }
-        .cf-spinner { width: 16px; height: 16px; border: 2px solid #ff2d95; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .cf-check { color: #ff2d95; font-size: 20px; display: none; }
-
+        /* Основной контейнер */
         .container {
             position: relative; z-index: 5;
-            width: 90%; max-width: 380px;
-            padding: 40px 25px; text-align: center;
-            background: rgba(15, 0, 30, 0.4);
+            width: 95%; max-width: 400px;
+            padding: 30px 20px; text-align: center;
+            background: rgba(15, 0, 30, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 30px;
             backdrop-filter: blur(20px);
             display: none; opacity: 0;
             transition: opacity 1s ease;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+            animation: pulse-border 3s infinite ease-in-out;
         }
 
+        /* Плеер */
         .player-wrapper {
-            position: relative; width: 220px; height: 220px;
-            margin: 0 auto 15px; display: flex; justify-content: center; align-items: center;
+            position: relative; width: 200px; height: 200px;
+            margin: 0 auto 10px; display: flex; justify-content: center; align-items: center;
         }
         .progress-ring { position: absolute; transform: rotate(135deg); }
         .progress-ring__circle { 
@@ -76,24 +67,76 @@
         .progress-ring__background { 
             stroke: rgba(255, 255, 255, 0.1); stroke-dasharray: 628.3; stroke-dashoffset: 157;
         }
-        .avatar-container { width: 160px; height: 160px; border-radius: 50%; overflow: hidden; border: 3px solid #050008; z-index: 2; }
-        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-container { 
+            width: 145px; height: 145px; border-radius: 50%; overflow: hidden; 
+            border: 3px solid #050008; z-index: 2; 
+            user-select: none; -webkit-user-select: none;
+        }
+        .profile-pic { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .progress-dot { 
-            position: absolute; width: 14px; height: 14px; background: #fff; 
+            position: absolute; width: 12px; height: 12px; background: #fff; 
             border-radius: 50%; box-shadow: 0 0 15px #ff2d95; z-index: 3; 
-            left: 50%; top: 50%; transform-origin: center center; pointer-events: none;
+            left: 50%; top: 50%; transform-origin: center center;
         }
 
-        .time-display { font-size: 8px; color: #ffffff; margin: 10px 0 20px; opacity: 0.7; letter-spacing: 1px; }
-        h1 { font-size: 16px; margin: 10px 0 5px; color: #fff; text-shadow: 0 0 10px rgba(255,45,149,0.5); }
-        .artist { font-size: 7px; color: #c48efd; margin-bottom: 25px; opacity: 0.8; }
-        .play-btn { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #8a2be2, #ff2d95); border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin: 0 auto; }
+        .time-display { font-size: 8px; color: #ffffff; margin: 10px 0 15px; opacity: 0.7; letter-spacing: 1px; }
+        h1 { font-size: 14px; margin: 5px 0; color: #fff; }
+        .artist { font-size: 7px; color: #c48efd; margin-bottom: 20px; opacity: 0.8; }
+
+        /* Кнопки соцсетей */
+        .social-links {
+            display: flex; flex-direction: column; gap: 12px; margin-top: 20px;
+        }
+        .glass-btn {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            padding: 12px; border-radius: 15px;
+            text-decoration: none; color: #fff; font-size: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            animation: pulse-border 4s infinite ease-in-out;
+        }
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .glass-btn i { font-size: 16px; }
+        .icon-tg { color: #26A5E4; }
+        .icon-google { color: #FBBC05; }
+
+        .play-btn { 
+            width: 50px; height: 50px; border-radius: 50%; 
+            background: linear-gradient(135deg, #8a2be2, #ff2d95); 
+            border: none; color: white; font-size: 18px; cursor: pointer; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin: 0 auto;
+        }
+
+        /* Стили Cloudflare */
+        #verify-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 0, 8, 0.95); backdrop-filter: blur(15px);
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .cf-turnstile-wrapper {
+            background: #ffffff; border-radius: 4px; padding: 0 15px;
+            width: 300px; height: 65px; display: flex; align-items: center;
+            justify-content: space-between; cursor: pointer;
+        }
+        .cf-text { color: #000; font-family: sans-serif; font-size: 14px; }
+        .cf-checkbox { width: 28px; height: 28px; border: 2px solid #ff2d95; border-radius: 3px; display: flex; justify-content: center; align-items: center; }
+        .cf-spinner { width: 16px; height: 16px; border: 2px solid #ff2d95; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .cf-check { color: #ff2d95; font-size: 20px; display: none; }
     </style>
 </head>
 <body>
 
     <div class="video-background">
-        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&disablekb=1&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&disablekb=1&modestbranding=1" 
+                frameborder="0" allow="autoplay; encrypted-media" 
+                disablePictureInPicture 
+                controlsList="nodownload"></iframe>
     </div>
 
     <div id="particles-js"></div>
@@ -113,18 +156,19 @@
 
     <div class="container" id="main-content">
         <div class="player-wrapper">
-            <svg class="progress-ring" width="220" height="220">
-                <circle class="progress-ring__background" stroke-width="6" fill="transparent" r="100" cx="110" cy="110" stroke-linecap="round"/>
-                <circle id="circle-progress" class="progress-ring__circle" stroke-width="6" fill="transparent" r="100" cx="110" cy="110" stroke-linecap="round"/>
+            <svg class="progress-ring" width="200" height="200">
+                <circle class="progress-ring__background" stroke-width="5" fill="transparent" r="90" cx="100" cy="100" stroke-linecap="round"/>
+                <circle id="circle-progress" class="progress-ring__circle" stroke-width="5" fill="transparent" r="90" cx="100" cy="100" stroke-linecap="round"/>
             </svg>
             <div id="dot" class="progress-dot"></div>
             <div class="avatar-container">
-                <img src="https://raw.githubusercontent.com/DmitryLegend/bio/main/image.png" alt="Avatar" class="profile-pic">
+                <img src="https://raw.githubusercontent.com/DmitryLegend/bio/main/image.png" 
+                     alt="Avatar" class="profile-pic" draggable="false">
             </div>
         </div>
 
         <div class="time-display">
-            <span id="current-time">00:00</span> / <span id="duration">00:00</span>
+            <span id="current-time">00:00</span> / <span>01:52</span>
         </div>
         
         <h1>DmitryLegend</h1>
@@ -134,7 +178,18 @@
             <i class="fas fa-pause" id="playIcon"></i>
         </button>
 
-        <audio id="myAudio" loop>
+        <div class="social-links">
+            <a href="https://t.me/DmitryLegend" target="_blank" class="glass-btn">
+                <i class="fab fa-telegram icon-tg"></i>
+                <span>TELEGRAM</span>
+            </a>
+            <a href="https://g.dev/dm823524" target="_blank" class="glass-btn">
+                <i class="fab fa-google icon-google"></i>
+                <span>GOOGLE DEV</span>
+            </a>
+        </div>
+
+        <audio id="myAudio" loop disablePictureInPicture controlsList="nodownload">
             <source src="https://raw.githubusercontent.com/DmitryLegend/bio/main/ambient-space-arpeggio-350710.mp3" type="audio/mpeg">
         </audio>
     </div>
@@ -145,27 +200,50 @@
         const circle = document.getElementById('circle-progress');
         const dot = document.getElementById('dot');
         const currentTimeEl = document.getElementById('current-time');
-        const durationEl = document.getElementById('duration');
         
-        const radius = 100;
+        const radius = 90;
         const circumference = 2 * Math.PI * radius;
         const arcLength = circumference * 0.75;
 
-        // Таймер
-        function formatTime(s) {
-            if (isNaN(s)) return "00:00";
-            let m = Math.floor(s / 60);
-            s = Math.floor(s % 60);
-            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        // Анимация вкладки
+        const targetTitle = "DmitryLegend";
+        const inv = "\u200E";
+        async function runTitleCycle() {
+            while (true) {
+                let current = Array(targetTitle.length).fill(' ');
+                let revealIndices = Array.from({length: targetTitle.length}, (_, i) => i);
+                while (revealIndices.length > 0) {
+                    const charIdx = revealIndices.splice(Math.floor(Math.random() * revealIndices.length), 1)[0];
+                    current[charIdx] = targetTitle[charIdx];
+                    document.title = current.join('');
+                    await new Promise(r => setTimeout(r, 150));
+                }
+                await new Promise(r => setTimeout(r, 3000));
+                let hideIndices = Array.from({length: targetTitle.length}, (_, i) => i);
+                while (hideIndices.length > 0) {
+                    const charIdx = hideIndices.splice(Math.floor(Math.random() * hideIndices.length), 1)[0];
+                    current[charIdx] = ' ';
+                    document.title = current.join('').trim() === "" ? inv : current.join('');
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                document.title = inv;
+                await new Promise(r => setTimeout(r, 500));
+            }
         }
+        runTitleCycle();
 
         function setProgress(percent) {
-            const offset = circumference - (percent / 100 * arcLength);
-            circle.style.strokeDashoffset = offset;
+            circle.style.strokeDashoffset = circumference - (percent / 100 * arcLength);
             const angle = 135 + (percent * 2.7); 
             const x = Math.cos(angle * Math.PI / 180) * radius;
             const y = Math.sin(angle * Math.PI / 180) * radius;
             dot.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        }
+
+        function formatTime(s) {
+            let m = Math.floor(s / 60);
+            s = Math.floor(s % 60);
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
         }
 
         function handleVerify() {
@@ -195,7 +273,6 @@
             else { audio.pause(); icon.className = 'fas fa-play'; }
         }
 
-        audio.onloadedmetadata = () => { durationEl.innerText = formatTime(audio.duration); };
         audio.ontimeupdate = () => {
             if (audio.duration) {
                 const percent = (audio.currentTime / audio.duration) * 100;
@@ -204,37 +281,14 @@
             }
         };
 
-        // НАСТРОЙКА ЧАСТИЦ (РАЗМЕР И ПОВЕДЕНИЕ 8-9 ИЗМЕНЕНИЯ)
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#ffffff" },
-                "shape": { "type": "circle" },
-                "opacity": { 
-                    "value": 0.4, 
-                    "random": true, 
-                    "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } 
-                },
-                "size": { 
-                    "value": 5, // Увеличенный размер
-                    "random": true, 
-                    "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } 
-                },
-                "line_linked": { 
-                    "enable": true, 
-                    "distance": 150, 
-                    "color": "#ff2d95", 
-                    "opacity": 0.3, 
-                    "width": 1 
-                },
-                "move": { 
-                    "enable": true, 
-                    "speed": 1.5, // Медленное плавное движение
-                    "direction": "none", 
-                    "random": true, 
-                    "straight": false, 
-                    "out_mode": "bounce" // Отскок от краев
-                }
+                "opacity": { "value": 0.4, "random": true },
+                "size": { "value": 5, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ff2d95", "opacity": 0.3, "width": 1 },
+                "move": { "enable": true, "speed": 1.5, "out_mode": "bounce" }
             }
         });
         setProgress(0);
