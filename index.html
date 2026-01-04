@@ -166,3 +166,203 @@
             border-radius: 10px; text-decoration: none; color: white; font-size: 9px; transition: 0.3s;
         }
         .link-card:hover {
+            background: rgba(199, 36, 177, 0.3); border-color: #c724b1; color: #e0aaff;
+            transform: scale(1.02); box-shadow: 0 0 15px rgba(199, 36, 177, 0.4);
+        }
+        .link-card i { margin-right: 10px; font-size: 14px; }
+
+        /* --- ПЛЕЕР --- */
+        .player-container {
+            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(199, 36, 177, 0.25);
+            border-radius: 15px; padding: 15px;
+        }
+        .player-title { font-size: 7px; margin-bottom: 12px; color: #c48efd; }
+        .btn-play {
+            background: linear-gradient(45deg, #6a00f4, #c724b1); border: none; color: white;
+            padding: 8px 15px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px;
+            margin-bottom: 15px; box-shadow: 0 4px 0 #31004a; transition: 0.2s;
+        }
+        .btn-play:hover { box-shadow: 0 2px 0 #31004a; transform: translateY(2px); }
+        .control-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .control-label, .time-display { font-size: 6px; color: #c48efd; }
+
+        input[type="range"] {
+            -webkit-appearance: none; width: 100%; height: 4px; background: rgba(199, 36, 177, 0.2);
+            border-radius: 5px; outline: none; cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none; width: 12px; height: 12px; background: #e0aaff;
+            border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px #c724b1, 0 0 5px #fff; transition: 0.2s ease-in-out;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.3); background: #ffffff; box-shadow: 0 0 15px #c724b1, 0 0 10px #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="verify-screen">
+        <iframe class="video-bg" src="https://www.youtube.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&controls=0&loop=1&playlist=eTD0WWFIDAg&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+        <div class="cf-turnstile-wrapper">
+            <div class="cf-content">
+                <div class="cf-checkbox" onclick="handleVerify()">
+                    <div class="cf-spinner" id="spinner"></div>
+                    <i class="fas fa-check cf-check" id="check-mark"></i>
+                </div>
+                <div class="cf-text" id="verify-txt">Verify you are human</div>
+            </div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55" alt="Cloudflare">
+        </div>
+    </div>
+
+    <div id="particles-js"></div>
+
+    <div class="container" id="main-content">
+        <div class="profile-pic-wrapper">
+            <div class="fire-glow"></div>
+            <img src="myavatar.png" alt="Avatar" class="profile-pic">
+        </div>
+        
+        <h1>DmitryLegend</h1>
+        <p>Developer / Schoolboy</p>
+
+        <div class="links">
+            <a href="https://t.me/lie2srvv" class="link-card" target="_blank"><i class="fab fa-telegram"></i> TELEGRAM</a>
+            <a href="https://www.twitch.tv/lie2srvv" class="link-card" target="_blank"><i class="fab fa-twitch"></i> TWITCH</a>
+            <a href="https://lie2srvv.github.io" class="link-card" target="_blank"><i class="fas fa-paint-brush"></i> PAINT</a>
+        </div>
+
+        <div class="player-container">
+            <div class="player-title">NOW PLAYING: Music.exe</div>
+            <audio id="myAudio" loop><source src="background.mp3" type="audio/mpeg"></audio>
+            <button class="btn-play" onclick="togglePlay()" id="playBtn">PAUSE</button>
+            <div class="control-header">
+                <span class="control-label">PROGRESS</span>
+                <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+            </div>
+            <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // --- НОВАЯ АНИМАЦИЯ ЗАГОЛОВКА (Случайное появление букв) ---
+        const targetTitleText = "DmitryLegend";
+        const titleLength = targetTitleText.length;
+        // Создаем массив, заполненный неразрывными пробелами, той же длины, что и имя
+        // Неразрывный пробел (\u00A0) нужен, чтобы браузер не схлопывал их и ширина сохранялась
+        let currentTitleArray = Array(titleLength).fill('\u00A0');
+        // Создаем пул доступных индексов (от 0 до длины имени)
+        let availableIndices = Array.from({length: titleLength}, (_, i) => i);
+
+        function animateTitleRandomly() {
+            // Если доступных индексов не осталось, анимация завершена
+            if (availableIndices.length === 0) {
+                 document.title = targetTitleText; // Убеждаемся, что конечный результат точный
+                 return;
+            }
+
+            // Выбираем случайный индекс из доступных
+            const randomIndexIndex = Math.floor(Math.random() * availableIndices.length);
+            const indexToReveal = availableIndices[randomIndexIndex];
+
+            // Удаляем выбранный индекс из пула, чтобы не выбрать его снова
+            availableIndices.splice(randomIndexIndex, 1);
+
+            // Заменяем пробел в массиве на нужную букву из конечного имени
+            currentTitleArray[indexToReveal] = targetTitleText[indexToReveal];
+
+            // Собираем массив обратно в строку и устанавливаем заголовок
+            document.title = currentTitleArray.join('');
+
+            // Повторяем через короткий промежуток времени (эффект "декодирования")
+            setTimeout(animateTitleRandomly, 150);
+        }
+
+        // Запускаем анимацию через полсекунды после загрузки
+        setTimeout(animateTitleRandomly, 500);
+
+        // --- ФУНКЦИЯ ПОДТВЕРЖДЕНИЯ ---
+        function handleVerify() {
+            const spinner = document.getElementById('spinner');
+            const check = document.getElementById('check-mark');
+            const txt = document.getElementById('verify-txt');
+            const screen = document.getElementById('verify-screen');
+            const main = document.getElementById('main-content');
+            const audio = document.getElementById('myAudio');
+
+            // Делаем чекбокс неактивным после клика, чтобы не нажимали дважды
+            document.querySelector('.cf-checkbox').style.pointerEvents = 'none';
+
+            spinner.style.display = 'block';
+            txt.innerText = 'Verifying...';
+            setTimeout(() => {
+                spinner.style.display = 'none';
+                check.style.display = 'block';
+                setTimeout(() => {
+                    check.style.opacity = '1';
+                    check.style.transform = 'scale(1)';
+                    txt.innerText = 'Success!';
+                }, 10);
+                setTimeout(() => {
+                    screen.style.opacity = '0';
+                    setTimeout(() => {
+                        screen.style.display = 'none';
+                        main.style.display = 'block';
+                        setTimeout(() => main.style.opacity = '1', 50);
+                        // audio.volume = 0.3; audio.play(); // Автоплей может быть заблокирован браузером
+                    }, 800);
+                }, 1000);
+            }, 2000); // Увеличил время "проверки" до 2 секунд для солидности
+        }
+
+        // Частицы (Космическая палитра)
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": ["#c724b1", "#6a00f4", "#00bcd4", "#e0aaff"] },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                "size": { "value": 3, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } },
+                "line_linked": { "enable": false },
+                "move": { "enable": true, "speed": 1, "direction": "top", "random": true, "out_mode": "out" }
+            }
+        });
+
+        // Аудио плеер логика
+        const audio = document.getElementById('myAudio');
+        const playBtn = document.getElementById('playBtn');
+        const progressBar = document.getElementById('progressBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        function formatTime(s) {
+            if (isNaN(s)) return "00:00";
+            let m = Math.floor(s / 60);
+            s = Math.floor(s % 60);
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerText = "PAUSE";
+            } else {
+                audio.pause();
+                playBtn.innerText = "PLAY";
+            }
+        }
+
+        function seek() {
+            if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration;
+        }
+
+        audio.ontimeupdate = () => {
+            if (audio.duration) {
+                progressBar.value = (audio.currentTime / audio.duration) * 100;
+                timeDisplay.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            }
+        };
+    </script>
+</body>
+</html>
