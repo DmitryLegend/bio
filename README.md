@@ -1,62 +1,167 @@
-# 🌌 Cosmic Bio Template (DmitryLegend Edition)
+# 🌌 Cosmic Bio Template
 
-A stylish, space-themed personal bio page featuring a "Cloudflare-style" verification entrance, animated background particles, and a custom audio player with synchronized video logic.
+
+
+
+
+
+
+A stylish, space-themed personal bio page featuring a "Cloudflare-style" verification entrance, animated background particles, and a custom audio player.
+
+
+
+
+
 
 ![Project Status](https://img.shields.io/badge/Status-Active-blueviolet)
+
+
+
 ![License](https://img.shields.io/badge/License-MIT-fab)
 
----
+
+
+
+
 
 ## ✨ Features
 
-* **🕵️ Verification Gate:** A fake "Verify you are human" screen that transitions smoothly. While verifying, the background video loops the first 4 seconds.
-* **🎥 Smart Video Background:** High-quality MP4 background that "unfreezes" and continues playing from the 4th second once verified.
-* **🎭 Cascade Animations:** * The main block appears with a **Scale & Fade** effect.
-    * Social buttons (Telegram & Google) fade in smoothly right after the main block appears.
-* **🎨 Purple Neon Aesthetic:** Deep dark theme with a subtle, synchronized purple pulse effect on all borders.
+
+
+
+
+
+* **🕵️ Verification Gate:** A fake "Verify you are human" screen (Cloudflare style) that transitions smoothly into the main profile.
+
+
+
+* **🎨 Cosmic Theme:** Deep purple and neon magenta color palette with a glowing, pulsating avatar effect.
+
+
+
+* **✨ Particle Effects:** Interactive background using `particles.js` with a custom space color scheme.
+
+
+
 * **🎵 Custom Audio Player:**
-    * Synchronized purple progress dot and arc seeker.
-    * Auto-looping background music with time display.
-* **⌨️ Fixed Tab Title Animation:** Perfect typewriter effect for the browser tab title that never misses a letter.
-* **⏳ Auto-Maintenance:** The page automatically reloads every 9 minutes to keep the session and video fresh.
 
----
 
-## 🔗 Status & Contact
 
-| Status | Personal Link |
-| :--- | :--- |
-| **Active** | [**Contact via Telegram**](https://t.me/DmitryLegend) |
+    * Auto-looping background music.
 
----
+
+
+    * Custom play/pause button and seek bar styled to match the theme.
+
+
+
+    * Time progression display.
+
+
+
+* **⌨️ Tab Title Animation:** Typewriter effect for the browser tab title.
+
+
+
+
+
 
 ## 🛠️ Installation & Usage
 
+
+
+
+
+
 1.  **Clone the repository:**
+
+
+
     ```bash
-    git clone [https://github.com/DmitryLegend/bio.git](https://github.com/DmitryLegend/bio.git)
+
+
+
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+
+
+
     ```
 
+
+
+
+
+
 2.  **Add your media:**
-    * Profile picture: `image.png`
-    * Background video: `videoplayback.mp4`
-    * Background music: `ambient-space-arpeggio-350710.mp3`
+
+
+
+    * Place your profile picture in the root folder and name it `myavatar.png`.
+
+
+
+    * Place your background music file in the root folder and name it `background.mp3`.
+
+
+
+
+
 
 3.  **Edit `index.html`:**
-    * Change the `<h1>` tag for your username.
-    * Update the social links in the `.social-links` div.
 
----
+
+
+    * Open `index.html` in any text editor.
+
+
+
+    * Find the `<h1>` tag to change the username.
+
+
+
+    * Update the `links` section with your own social media URLs (Telegram, Twitch, etc.).
+
+
+
+
+
 
 ## 🎨 Customization
 
-### Changing Animations
-The appearance effects are defined in the `<style>` section:
-* **Main Block:** Look for `@keyframes blockAppear`.
-* **Buttons:** Look for `@keyframes buttonsFadeIn`.
 
-### Music & Video Logic
-To change the starting volume or video sync, check the `handleVerify()` function in the script:
+
+
+
+
+### Changing Colors
+
+
+
+The entire color scheme is defined in the `<style>` section of `index.html`.
+
+
+
+* **Background:** Look for `body` and `#particles-js`.
+
+
+
+* **Accent Colors:** Search for hex codes like `#c724b1` (Magenta) and `#6a00f4` (Deep Purple) to change the glowing effects.
+
+
+
+
+
+
+### Music Player
+
+
+
+To change the starting volume, find the `handleVerify()` function in the script:
+
+
+
 ```javascript
-audio.volume = 0.5; // Change 0.5 to any value between 0.0 and 1.0
-video.currentTime = 4; // The second where video continues after verification
+
+
+
+audio.volume = 0.3; // Change 0.3 to any value between 0.0 and 1.0
