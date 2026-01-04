@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&nbsp;</title>
+    <title>DmitryLegend Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
@@ -18,197 +18,192 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* Видео фон */
         .video-background {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
         }
-
         .video-background iframe {
-            position: absolute;
-            top: 50%; left: 50%;
+            position: absolute; top: 50%; left: 50%;
             width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
             transform: translate(-50%, -50%);
-            filter: brightness(0.25) contrast(1.1);
+            filter: brightness(0.2) contrast(1.1);
         }
 
-        #particles-js {
-            position: absolute;
-            width: 100%; height: 100%;
-            top: 0; left: 0;
-            z-index: 1;
-        }
+        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
 
+        /* Экран проверки */
         #verify-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 0, 8, 0.6);
-            backdrop-filter: blur(12px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 0, 8, 0.95);
+            backdrop-filter: blur(15px);
             display: flex; justify-content: center; align-items: center;
-            z-index: 1000;
-            transition: opacity 0.8s ease;
+            z-index: 1000; transition: opacity 0.8s ease;
         }
 
         .cf-turnstile-wrapper {
-            background: #ffffff;
-            border-radius: 4px; padding: 0 15px;
-            width: 300px; height: 65px; 
-            display: flex; align-items: center;
-            justify-content: space-between;
-            border: 1px solid #d9d9d9;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+            background: #ffffff; border-radius: 4px; padding: 0 15px;
+            width: 300px; height: 65px; display: flex; align-items: center;
+            justify-content: space-between; cursor: pointer;
         }
-
-        .cf-checkbox {
-            width: 28px; height: 28px;
-            border: 2px solid #c724b1;
-            border-radius: 3px;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; background: #fff;
-        }
-
-        .cf-spinner {
-            width: 16px; height: 16px;
-            border: 2px solid #c724b1; border-top: 2px solid transparent;
-            border-radius: 50%; animation: spin 0.8s linear infinite; display: none;
-        }
+        .cf-text { color: #000; font-family: sans-serif; font-size: 14px; }
+        .cf-checkbox { width: 28px; height: 28px; border: 2px solid #c724b1; border-radius: 3px; display: flex; justify-content: center; align-items: center; }
+        .cf-spinner { width: 16px; height: 16px; border: 2px solid #c724b1; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .cf-check { color: #c724b1; font-size: 20px; display: none; }
-        .cf-text { color: #000; font-family: sans-serif; font-size: 14px; user-select: none; }
 
-        /* ИЗМЕНЕННЫЙ КОНТЕЙНЕР С БЕЛЫМ СВЕЧЕНИЕМ */
+        /* Контейнер био */
         .container {
-            position: relative;
-            z-index: 5;
-            width: 90%; max-width: 340px;
-            padding: 40px 25px;
-            text-align: center;
-            background: rgba(20, 0, 40, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.5); /* Более светлая рамка */
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            display: none;
-            opacity: 0;
+            position: relative; z-index: 5;
+            width: 90%; max-width: 380px;
+            padding: 40px 25px; text-align: center;
+            background: rgba(15, 0, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            display: none; opacity: 0;
             transition: opacity 1s ease;
-            
-            /* БЕЛОЕ СВЕЧЕНИЕ (BOX SHADOW) */
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 
-                        0 0 40px rgba(255, 255, 255, 0.1),
-                        inset 0 0 15px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
         }
 
-        .profile-pic-wrapper { position: relative; width: 110px; height: 110px; margin: 0 auto 20px auto; }
-        .profile-pic { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #ffffff; object-fit: cover; position: relative; z-index: 3; }
-        
-        /* Пульсация теперь тоже белая для гармонии */
-        .fire-glow { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; 
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 75%); 
-            filter: blur(15px); z-index: 2; animation: spacePulse 3s infinite alternate; 
+        /* КРУГОВОЙ ПЛЕЕР СО СКРИНШОТА */
+        .player-wrapper {
+            position: relative;
+            width: 240px; height: 240px;
+            margin: 0 auto 30px;
+            display: flex; justify-content: center; align-items: center;
         }
-        @keyframes spacePulse { 0% { transform: scale(0.9); opacity: 0.3; } 100% { transform: scale(1.1); opacity: 0.6; } }
 
-        h1 { font-size: 14px; color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.5); margin-bottom: 8px; }
-        p { font-size: 8px; color: #e0e0e0; margin-bottom: 30px; }
+        /* SVG кольцо прогресса */
+        .progress-ring {
+            position: absolute;
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 0 8px rgba(199, 36, 177, 0.8));
+        }
+        .progress-ring__circle {
+            stroke-dasharray: 691; /* 2 * PI * 110 */
+            stroke-dashoffset: 691;
+            transition: stroke-dashoffset 0.1s linear;
+            stroke: #ff2d95; /* Розовый как на фото */
+        }
+        .progress-ring__background {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
 
-        .player-container { 
-            background: rgba(255, 255, 255, 0.05); 
-            padding: 15px; border-radius: 15px; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Аватарка внутри кольца */
+        .avatar-container {
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #050008;
+            z-index: 2;
         }
-        .btn-play { 
-            background: linear-gradient(45deg, #ffffff, #a0a0a0); 
-            border: none; color: black; padding: 12px; width: 100%; 
-            cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px; 
-            margin-bottom: 15px;
-            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Бегунок (точка) на кольце */
+        .progress-dot {
+            position: absolute;
+            width: 12px; height: 12px;
+            background: #ff2d95;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #ff2d95;
+            z-index: 3;
+            left: 50%; top: 50%;
+            transform-origin: -110px center; /* Радиус смещения */
         }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #444; outline: none; }
+
+        /* Текстовая информация */
+        h1 { font-size: 16px; margin: 10px 0; letter-spacing: 1px; }
+        .artist { font-size: 8px; color: #c48efd; margin-bottom: 30px; opacity: 0.8; }
+
+        /* Кнопки управления */
+        .controls {
+            display: flex; align-items: center; justify-content: center; gap: 30px;
+        }
+        .play-btn {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: linear-gradient(135deg, #8a2be2, #ff2d95);
+            border: none; color: white; font-size: 24px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+        }
+        .play-btn:active { transform: scale(0.9); }
+        .nav-icon { color: white; font-size: 20px; opacity: 0.8; cursor: pointer; border: none; background: none; }
+
     </style>
 </head>
 <body>
 
     <div class="video-background">
-        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&modestbranding=1&disablekb=1" 
-                frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&enablejsapi=1" 
+                frameborder="0" allow="autoplay"></iframe>
     </div>
 
     <div id="particles-js"></div>
 
     <div id="verify-screen">
         <div class="cf-turnstile-wrapper" onclick="handleVerify()">
-            <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <div class="cf-checkbox">
                     <div class="cf-spinner" id="spinner"></div>
                     <i class="fas fa-check cf-check" id="check-mark"></i>
                 </div>
                 <div class="cf-text" id="verify-txt">Verify you are human</div>
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55" alt="Cloudflare">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55">
         </div>
     </div>
 
     <div class="container" id="main-content">
-        <div class="profile-pic-wrapper">
-            <div class="fire-glow"></div>
-            <img src="myavatar.png" alt="Avatar" class="profile-pic">
-        </div>
-        <h1>DmitryLegend</h1>
-        <p>Developer</p>
+        <div class="player-wrapper">
+            <svg class="progress-ring" width="240" height="240">
+                <circle class="progress-ring__background" stroke-width="6" fill="transparent" r="110" cx="120" cy="120"/>
+                <circle id="circle-progress" class="progress-ring__circle" stroke-width="6" fill="transparent" r="110" cx="120" cy="120" stroke-linecap="round"/>
+            </svg>
+            
+            <div id="dot" class="progress-dot"></div>
 
-        <div class="player-container">
-            <audio id="myAudio" loop><source src="background.mp3" type="audio/mpeg"></audio>
-            <button class="btn-play" onclick="togglePlay()" id="playBtn">PLAY</button>
-            <input type="range" id="progressBar" value="0">
+            <div class="avatar-container">
+                <img src="https://raw.githubusercontent.com/DmitryLegend/bio/main/image.png" alt="Avatar" class="profile-pic">
+            </div>
         </div>
+        
+        <h1>DmitryLegend</h1>
+        <div class="artist">Ambient Space Arpeggio</div>
+
+        <div class="controls">
+            <button class="nav-icon"><i class="fas fa-step-backward"></i></button>
+            <button class="play-btn" onclick="togglePlay()" id="playBtn">
+                <i class="fas fa-pause" id="playIcon"></i>
+            </button>
+            <button class="nav-icon"><i class="fas fa-step-forward"></i></button>
+        </div>
+
+        <audio id="myAudio" loop>
+            <source src="https://raw.githubusercontent.com/DmitryLegend/bio/main/ambient-space-arpeggio-350710.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        const targetTitle = "DmitryLegend";
-        const invisibleChar = "\u200E";
+        const audio = document.getElementById('myAudio');
+        const circle = document.getElementById('circle-progress');
+        const dot = document.getElementById('dot');
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
 
-        async function runTitleCycle() {
-            while (true) {
-                let current = Array(targetTitle.length).fill('\u00A0');
-                let revealIndices = Array.from({length: targetTitle.length}, (_, i) => i);
-                
-                while (revealIndices.length > 0) {
-                    const randIdxIdx = Math.floor(Math.random() * revealIndices.length);
-                    const charIdx = revealIndices.splice(randIdxIdx, 1)[0];
-                    current[charIdx] = targetTitle[charIdx];
-                    document.title = current.join('');
-                    await new Promise(r => setTimeout(r, 150));
-                }
-                await new Promise(r => setTimeout(r, 3000));
-                let hideIndices = Array.from({length: targetTitle.length}, (_, i) => i);
-                while (hideIndices.length > 0) {
-                    const randIdxIdx = Math.floor(Math.random() * hideIndices.length);
-                    const charIdx = hideIndices.splice(randIdxIdx, 1)[0];
-                    current[charIdx] = '\u00A0';
-                    document.title = current.join('') === "" ? invisibleChar : current.join('');
-                    await new Promise(r => setTimeout(r, 100));
-                }
-                document.title = invisibleChar;
-                await new Promise(r => setTimeout(r, 500));
-            }
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+
+        function setProgress(percent) {
+            const offset = circumference - (percent / 100 * circumference);
+            circle.style.strokeDashoffset = offset;
+            
+            // Вращение точки
+            const angle = (percent * 3.6) - 90;
+            dot.style.transform = `translate(-50%, -50%) rotate(${angle}deg) translateX(110px) rotate(${-angle}deg)`;
         }
-        runTitleCycle();
-
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 70 },
-                "color": { "value": ["#ffffff", "#aaaaaa"] },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5 },
-                "size": { "value": 2 },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 1.2, "random": true, "out_mode": "out" }
-            }
-        });
 
         function handleVerify() {
             const spin = document.getElementById('spinner');
@@ -216,37 +211,65 @@
             const txt = document.getElementById('verify-txt');
             const screen = document.getElementById('verify-screen');
             const main = document.getElementById('main-content');
-            const audio = document.getElementById('myAudio');
-            
+
+            // "Прогрев" аудио для обхода блокировки браузеров
+            audio.play().then(() => {
+                audio.pause();
+                audio.currentTime = 0;
+            }).catch(() => {});
+
             spin.style.display = 'block';
             txt.innerText = 'Verifying...';
-            
+
             setTimeout(() => {
                 spin.style.display = 'none';
                 check.style.display = 'block';
                 txt.innerText = 'Success!';
+                
                 setTimeout(() => {
                     screen.style.opacity = '0';
                     setTimeout(() => {
                         screen.style.display = 'none';
                         main.style.display = 'block';
-                        setTimeout(() => main.style.opacity = '1', 50);
-                        audio.volume = 0.4;
-                        audio.play().catch(() => {});
+                        setTimeout(() => {
+                            main.style.opacity = '1';
+                            audio.volume = 0.5;
+                            audio.play();
+                        }, 50);
                     }, 800);
                 }, 1000);
             }, 1500);
         }
 
-        const audio = document.getElementById('myAudio');
-        const playBtn = document.getElementById('playBtn');
-        const progressBar = document.getElementById('progressBar');
         function togglePlay() {
-            if (audio.paused) { audio.play(); playBtn.innerText = "PAUSE"; }
-            else { audio.pause(); playBtn.innerText = "PLAY"; }
+            const icon = document.getElementById('playIcon');
+            if (audio.paused) {
+                audio.play();
+                icon.className = 'fas fa-pause';
+            } else {
+                audio.pause();
+                icon.className = 'fas fa-play';
+            }
         }
-        audio.ontimeupdate = () => { if (audio.duration) progressBar.value = (audio.currentTime / audio.duration) * 100; };
-        progressBar.oninput = () => { if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration; };
+
+        audio.ontimeupdate = () => {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                setProgress(percent);
+            }
+        };
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 40 },
+                "color": { "value": "#ffffff" },
+                "opacity": { "value": 0.2 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#c724b1", "opacity": 0.1 }
+            }
+        });
+        
+        // Инициализация точки в начальной позиции
+        setProgress(0);
     </script>
 </body>
 </html>
