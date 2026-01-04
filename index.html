@@ -64,56 +64,36 @@
             box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
         }
 
-        /* Полукруглый плеер */
         .player-wrapper {
             position: relative; width: 220px; height: 220px;
             margin: 0 auto 15px; display: flex; justify-content: center; align-items: center;
         }
-        .progress-ring { 
-            position: absolute; 
-            transform: rotate(135deg); /* Поворот для создания разрыва снизу */
-        }
+        .progress-ring { position: absolute; transform: rotate(135deg); }
         .progress-ring__circle { 
-            stroke-dasharray: 691; 
-            stroke-dashoffset: 173; /* Создаем фиксированный разрыв (25% круга) */
-            stroke: #ff2d95;
-            transition: stroke-dashoffset 0.1s linear;
+            stroke-dasharray: 628.3; stroke-dashoffset: 628.3;
+            stroke: #ff2d95; transition: stroke-dashoffset 0.1s linear;
         }
-        /* Анимируемая часть прогресса поверх подложки */
-        #circle-progress {
-            stroke-dashoffset: 518; /* Начальное значение (0% прогресса на 75% дуге) */
-            filter: drop-shadow(0 0 8px #ff2d95);
+        .progress-ring__background { 
+            stroke: rgba(255, 255, 255, 0.1); stroke-dasharray: 628.3; stroke-dashoffset: 157;
         }
-        .progress-ring__background { stroke: rgba(255, 255, 255, 0.1); }
-
         .avatar-container { width: 160px; height: 160px; border-radius: 50%; overflow: hidden; border: 3px solid #050008; z-index: 2; }
         .profile-pic { width: 100%; height: 100%; object-fit: cover; }
-        
         .progress-dot { 
             position: absolute; width: 14px; height: 14px; background: #fff; 
             border-radius: 50%; box-shadow: 0 0 15px #ff2d95; z-index: 3; 
-            left: 50%; top: 50%; 
-            transform-origin: center center;
+            left: 50%; top: 50%; transform-origin: center center; pointer-events: none;
         }
 
         .time-display { font-size: 8px; color: #ffffff; margin: 10px 0 20px; opacity: 0.7; letter-spacing: 1px; }
         h1 { font-size: 16px; margin: 10px 0 5px; color: #fff; text-shadow: 0 0 10px rgba(255,45,149,0.5); }
         .artist { font-size: 7px; color: #c48efd; margin-bottom: 25px; opacity: 0.8; }
-
-        .play-btn { 
-            width: 60px; height: 60px; border-radius: 50%; 
-            background: linear-gradient(135deg, #8a2be2, #ff2d95); 
-            border: none; color: white; font-size: 20px; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin: 0 auto;
-        }
+        .play-btn { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #8a2be2, #ff2d95); border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin: 0 auto; }
     </style>
 </head>
 <body>
 
     <div class="video-background">
-        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&disablekb=1&modestbranding=1" 
-                frameborder="0" allow="autoplay; encrypted-media" disablePictureInPicture></iframe>
+        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&disablekb=1&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
 
     <div id="particles-js"></div>
@@ -127,17 +107,15 @@
                 </div>
                 <div class="cf-text" id="verify-txt">Verify you are human</div>
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55" alt="Cloudflare">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55">
         </div>
     </div>
 
     <div class="container" id="main-content">
         <div class="player-wrapper">
             <svg class="progress-ring" width="220" height="220">
-                <circle class="progress-ring__background" stroke-width="6" fill="transparent" r="100" cx="110" cy="110" 
-                        stroke-dasharray="628.3" stroke-dashoffset="157" stroke-linecap="round"/>
-                <circle id="circle-progress" class="progress-ring__circle" stroke-width="6" fill="transparent" r="100" cx="110" cy="110" 
-                        stroke-dasharray="628.3" stroke-dashoffset="628.3" stroke-linecap="round"/>
+                <circle class="progress-ring__background" stroke-width="6" fill="transparent" r="100" cx="110" cy="110" stroke-linecap="round"/>
+                <circle id="circle-progress" class="progress-ring__circle" stroke-width="6" fill="transparent" r="100" cx="110" cy="110" stroke-linecap="round"/>
             </svg>
             <div id="dot" class="progress-dot"></div>
             <div class="avatar-container">
@@ -146,11 +124,11 @@
         </div>
 
         <div class="time-display">
-            <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+            <span id="current-time">00:00</span> / <span id="duration">00:00</span>
         </div>
         
         <h1>DmitryLegend</h1>
-        <div class="artist">Music.exe</div>
+        <div class="artist">Ambient Space Arpeggio</div>
 
         <button class="play-btn" onclick="togglePlay()">
             <i class="fas fa-pause" id="playIcon"></i>
@@ -169,49 +147,22 @@
         const currentTimeEl = document.getElementById('current-time');
         const durationEl = document.getElementById('duration');
         
-        // Математика дуги (270 градусов)
         const radius = 100;
-        const totalArc = 0.75; // 75% круга
         const circumference = 2 * Math.PI * radius;
-        const arcLength = circumference * totalArc;
+        const arcLength = circumference * 0.75;
 
-        // Анимация вкладки
-        const targetTitle = "DmitryLegend";
-        const inv = "\u200E";
-        async function runTitleCycle() {
-            while (true) {
-                let current = Array(targetTitle.length).fill(' ');
-                let revealIndices = Array.from({length: targetTitle.length}, (_, i) => i);
-                while (revealIndices.length > 0) {
-                    const rIdx = Math.floor(Math.random() * revealIndices.length);
-                    const charIdx = revealIndices.splice(rIdx, 1)[0];
-                    current[charIdx] = targetTitle[charIdx];
-                    document.title = current.join('');
-                    await new Promise(r => setTimeout(r, 150));
-                }
-                await new Promise(r => setTimeout(r, 3000));
-                let hideIndices = Array.from({length: targetTitle.length}, (_, i) => i);
-                while (hideIndices.length > 0) {
-                    const rIdx = Math.floor(Math.random() * hideIndices.length);
-                    const charIdx = hideIndices.splice(rIdx, 1)[0];
-                    current[charIdx] = ' ';
-                    document.title = current.join('').trim() === "" ? inv : current.join('');
-                    await new Promise(r => setTimeout(r, 100));
-                }
-                document.title = inv;
-                await new Promise(r => setTimeout(r, 500));
-            }
+        // Таймер
+        function formatTime(s) {
+            if (isNaN(s)) return "00:00";
+            let m = Math.floor(s / 60);
+            s = Math.floor(s % 60);
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
         }
-        runTitleCycle();
 
         function setProgress(percent) {
-            // Прогресс идет только по 75% длины окружности
-            const progress = (percent / 100) * arcLength;
-            const offset = circumference - progress;
+            const offset = circumference - (percent / 100 * arcLength);
             circle.style.strokeDashoffset = offset;
-            
-            // Расчет позиции точки (начало с 135 градусов)
-            const angle = 135 + (percent * 2.7); // 270 градусов / 100% = 2.7
+            const angle = 135 + (percent * 2.7); 
             const x = Math.cos(angle * Math.PI / 180) * radius;
             const y = Math.sin(angle * Math.PI / 180) * radius;
             dot.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
@@ -227,19 +178,12 @@
             spin.style.display = 'block';
             txt.innerText = 'Verifying...';
             setTimeout(() => {
-                spin.style.display = 'none';
-                check.style.display = 'block';
-                txt.innerText = 'Success!';
+                spin.style.display = 'none'; check.style.display = 'block'; txt.innerText = 'Success!';
                 setTimeout(() => {
                     screen.style.opacity = '0';
                     setTimeout(() => {
-                        screen.style.display = 'none';
-                        main.style.display = 'block';
-                        setTimeout(() => {
-                            main.style.opacity = '1';
-                            audio.volume = 0.5;
-                            audio.play();
-                        }, 50);
+                        screen.style.display = 'none'; main.style.display = 'block';
+                        setTimeout(() => { main.style.opacity = '1'; audio.volume = 0.5; audio.play(); }, 50);
                     }, 800);
                 }, 1000);
             }, 1500);
@@ -251,12 +195,6 @@
             else { audio.pause(); icon.className = 'fas fa-play'; }
         }
 
-        function formatTime(seconds) {
-            const min = Math.floor(seconds / 60);
-            const sec = Math.floor(seconds % 60);
-            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-        }
-
         audio.onloadedmetadata = () => { durationEl.innerText = formatTime(audio.duration); };
         audio.ontimeupdate = () => {
             if (audio.duration) {
@@ -266,12 +204,37 @@
             }
         };
 
+        // НАСТРОЙКА ЧАСТИЦ (РАЗМЕР И ПОВЕДЕНИЕ 8-9 ИЗМЕНЕНИЯ)
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 40 },
-                "color": { "value": "#ff2d95" },
-                "opacity": { "value": 0.2 },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ff2d95", "opacity": 0.1 }
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { 
+                    "value": 0.4, 
+                    "random": true, 
+                    "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } 
+                },
+                "size": { 
+                    "value": 5, // Увеличенный размер
+                    "random": true, 
+                    "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } 
+                },
+                "line_linked": { 
+                    "enable": true, 
+                    "distance": 150, 
+                    "color": "#ff2d95", 
+                    "opacity": 0.3, 
+                    "width": 1 
+                },
+                "move": { 
+                    "enable": true, 
+                    "speed": 1.5, // Медленное плавное движение
+                    "direction": "none", 
+                    "random": true, 
+                    "straight": false, 
+                    "out_mode": "bounce" // Отскок от краев
+                }
             }
         });
         setProgress(0);
