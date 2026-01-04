@@ -18,25 +18,38 @@
             display: flex; justify-content: center; align-items: center;
         }
 
+        /* Видео фон */
         .video-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none;
+            z-index: 0; overflow: hidden;
         }
-        .video-background iframe {
+        #bgVideo {
             position: absolute; top: 50%; left: 50%;
-            width: 100vw; height: 56.25vw;
-            min-height: 100vh; min-width: 177.77vh;
+            min-width: 100%; min-height: 100%;
             transform: translate(-50%, -50%);
             filter: brightness(0.15) contrast(1.1);
+            object-fit: cover;
         }
 
         #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
 
-        /* Фиолетовый синхронный импульс */
+        /* Мягкий импульс */
         @keyframes sync-purple-pulse {
-            0% { border-color: rgba(138, 43, 226, 0.2); box-shadow: 0 0 5px rgba(138, 43, 226, 0.2); }
-            50% { border-color: rgba(138, 43, 226, 0.7); box-shadow: 0 0 15px rgba(138, 43, 226, 0.5); }
-            100% { border-color: rgba(138, 43, 226, 0.2); box-shadow: 0 0 5px rgba(138, 43, 226, 0.2); }
+            0% { border-color: rgba(138, 43, 226, 0.05); box-shadow: 0 0 5px rgba(138, 43, 226, 0.05); }
+            50% { border-color: rgba(138, 43, 226, 0.25); box-shadow: 0 0 10px rgba(138, 43, 226, 0.15); }
+            100% { border-color: rgba(138, 43, 226, 0.05); box-shadow: 0 0 5px rgba(138, 43, 226, 0.05); }
+        }
+
+        /* Анимация увеличения блока */
+        @keyframes blockAppear {
+            0% { opacity: 0; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Анимация проявления кнопок */
+        @keyframes buttonsFadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .container {
@@ -44,12 +57,17 @@
             width: 95%; max-width: 380px;
             padding: 35px 25px; text-align: center;
             background: rgba(10, 0, 20, 0.7);
-            border: 1px solid rgba(138, 43, 226, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.15);
             border-radius: 30px;
             backdrop-filter: blur(20px);
             display: none; opacity: 0;
-            transition: opacity 1s ease;
             animation: sync-purple-pulse 5s infinite ease-in-out;
+        }
+
+        .container.show {
+            display: block;
+            animation: blockAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards, 
+                       sync-purple-pulse 5s infinite ease-in-out;
         }
 
         .player-wrapper {
@@ -57,50 +75,39 @@
             margin: 0 auto 15px; display: flex; justify-content: center; align-items: center;
         }
         .progress-ring { position: absolute; transform: rotate(135deg); z-index: 2; }
-        
         .progress-ring__circle { 
-            stroke-dasharray: 628.3; 
-            stroke-dashoffset: 628.3;
-            stroke: #ff2d95; 
-            transition: stroke-dashoffset 0.1s linear;
-            filter: drop-shadow(0 0 5px #ff2d95);
+            stroke-dasharray: 628.3; stroke-dashoffset: 628.3;
+            stroke: #ff2d95; transition: stroke-dashoffset 0.1s linear;
         }
-        .progress-ring__background { 
-            stroke: rgba(255, 255, 255, 0.1); 
-            stroke-dasharray: 628.3; 
-            stroke-dashoffset: 157; 
-        }
+        .progress-ring__background { stroke: rgba(255, 255, 255, 0.05); stroke-dasharray: 628.3; stroke-dashoffset: 157; }
 
-        .avatar-container { 
-            width: 160px; height: 160px; border-radius: 50%; overflow: hidden; 
-            border: 4px solid #050008; z-index: 1; 
-        }
+        .avatar-container { width: 160px; height: 160px; border-radius: 50%; overflow: hidden; border: 4px solid #050008; z-index: 1; }
         .profile-pic { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 
-        /* ФИОЛЕТОВАЯ ТОЧКА */
         .progress-dot { 
-            position: absolute; width: 14px; height: 14px; 
-            background: #8a2be2; 
+            position: absolute; width: 14px; height: 14px; background: #8a2be2; 
             border-radius: 50%; box-shadow: 0 0 15px #8a2be2; z-index: 4; 
-            left: 50%; top: 50%; pointer-events: none;
-            margin-left: -7px; margin-top: -7px; 
-            border: 2px solid #fff; /* Белая обводка для четкости на розовом фоне */
+            left: 50%; top: 50%; margin-left: -7px; margin-top: -7px; border: 2px solid #fff;
         }
 
-        .time-display { font-size: 9px; color: #ffffff; margin: 15px 0; opacity: 0.6; letter-spacing: 2px; }
-        h1 { font-size: 14px; margin: 10px 0 5px; color: #fff; text-shadow: 0 0 10px rgba(255,45,149,0.3); }
+        .time-display { font-size: 9px; color: #ffffff; margin: 15px 0; opacity: 0.5; letter-spacing: 2px; }
+        h1 { font-size: 14px; margin: 10px 0 5px; color: #fff; }
         .artist { font-size: 8px; color: #c48efd; margin-bottom: 25px; opacity: 0.8; }
 
-        .social-links { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        /* Кнопки с задержкой проявления */
+        .social-links { 
+            display: flex; flex-direction: column; gap: 15px; margin-top: 25px; 
+            opacity: 0; 
+        }
+        .social-links.show {
+            animation: buttonsFadeIn 0.5s ease 0.4s forwards;
+        }
+
         .glass-btn {
             display: flex; align-items: center; justify-content: center; gap: 15px;
-            padding: 14px; border-radius: 18px;
-            text-decoration: none; color: #fff; font-size: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            transition: 0.3s;
-            animation: sync-purple-pulse 5s infinite ease-in-out;
+            padding: 14px; border-radius: 18px; text-decoration: none; color: #fff; font-size: 8px;
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.12); transition: 0.3s;
         }
         .glass-btn:hover { background: rgba(255, 255, 255, 0.08); transform: scale(1.02); }
         .glass-btn i { font-size: 18px; color: #c48efd; }
@@ -114,8 +121,9 @@
 
         #verify-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 0, 8, 0.98); backdrop-filter: blur(20px);
-            display: flex; justify-content: center; align-items: center; z-index: 1000;
+            background: #050008; z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1s ease;
         }
         .cf-turnstile-wrapper {
             background: #ffffff; border-radius: 4px; padding: 0 15px;
@@ -132,8 +140,9 @@
 <body>
 
     <div class="video-background">
-        <iframe src="https://www.youtube-nocookie.com/embed/eTD0WWFIDAg?autoplay=1&mute=1&loop=1&playlist=eTD0WWFIDAg&controls=0&showinfo=0&rel=0&iv_load_policy=3&enablejsapi=1&disablekb=1&modestbranding=1" 
-                frameborder="0" allow="autoplay; encrypted-media" disablePictureInPicture></iframe>
+        <video id="bgVideo" autoplay muted playsinline loop>
+            <source src="https://raw.githubusercontent.com/DmitryLegend/bio/main/videoplayback.mp4" type="video/mp4">
+        </video>
     </div>
 
     <div id="particles-js"></div>
@@ -174,7 +183,7 @@
             <i class="fas fa-pause" id="playIcon"></i>
         </button>
 
-        <div class="social-links">
+        <div class="social-links" id="social-links">
             <a href="https://t.me/DmitryLegend" target="_blank" class="glass-btn">
                 <i class="fab fa-telegram"></i>
                 <span>TELEGRAM</span>
@@ -185,7 +194,7 @@
             </a>
         </div>
 
-        <audio id="myAudio" loop disablePictureInPicture>
+        <audio id="myAudio" loop>
             <source src="https://raw.githubusercontent.com/DmitryLegend/bio/main/ambient-space-arpeggio-350710.mp3" type="audio/mpeg">
         </audio>
     </div>
@@ -193,6 +202,7 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         const audio = document.getElementById('myAudio');
+        const video = document.getElementById('bgVideo');
         const circle = document.getElementById('circle-progress');
         const dot = document.getElementById('dot');
         const currentTimeEl = document.getElementById('current-time');
@@ -201,7 +211,79 @@
         const circumference = 2 * Math.PI * radius;
         const arcLength = circumference * 0.75;
 
-        // АНИМАЦИЯ ВКЛАДКИ (ПОЛНОЕ НАПИСАНИЕ)
+        let isVerified = false;
+        video.ontimeupdate = function() {
+            if (!isVerified && video.currentTime >= 4) {
+                video.currentTime = 0.1;
+            }
+        };
+
+        // Перезагрузка через 9 минут
+        setTimeout(() => { location.reload(); }, 540000);
+
+        function setProgress(percent) {
+            circle.style.strokeDashoffset = circumference - (percent / 100 * arcLength);
+            const angle = 135 + (percent * 2.7); 
+            const x = Math.cos(angle * Math.PI / 180) * radius;
+            const y = Math.sin(angle * Math.PI / 180) * radius;
+            dot.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function handleVerify() {
+            const spin = document.getElementById('spinner');
+            const check = document.getElementById('check-mark');
+            const txt = document.getElementById('verify-txt');
+            const screen = document.getElementById('verify-screen');
+            const main = document.getElementById('main-content');
+            const links = document.getElementById('social-links');
+
+            audio.play().then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
+            spin.style.display = 'block'; txt.innerText = 'Verifying...';
+
+            setTimeout(() => {
+                spin.style.display = 'none'; check.style.display = 'block'; txt.innerText = 'Success!';
+                isVerified = true;
+                video.currentTime = 4;
+                
+                setTimeout(() => {
+                    screen.style.opacity = '0';
+                    setTimeout(() => {
+                        screen.style.display = 'none'; 
+                        main.classList.add('show');
+                        links.classList.add('show');
+                        setTimeout(() => { audio.volume = 0.5; audio.play(); }, 100);
+                    }, 800);
+                }, 1000);
+            }, 1500);
+        }
+
+        function togglePlay() {
+            const icon = document.getElementById('playIcon');
+            if (audio.paused) { audio.play(); icon.className = 'fas fa-pause'; } 
+            else { audio.pause(); icon.className = 'fas fa-play'; }
+        }
+
+        audio.ontimeupdate = () => {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                setProgress(percent);
+                let m = Math.floor(audio.currentTime / 60);
+                let s = Math.floor(audio.currentTime % 60);
+                currentTimeEl.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+        };
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 30 },
+                "color": { "value": "#ffffff" },
+                "opacity": { "value": 0.1 },
+                "size": { "value": 2 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#8a2be2", "opacity": 0.05 },
+                "move": { "enable": true, "speed": 0.6 }
+            }
+        });
+
         const targetTitle = "DmitryLegend";
         async function runTitleCycle() {
             while (true) {
@@ -218,65 +300,6 @@
             }
         }
         runTitleCycle();
-
-        function setProgress(percent) {
-            circle.style.strokeDashoffset = circumference - (percent / 100 * arcLength);
-            const angle = 135 + (percent * 2.7); 
-            const x = Math.cos(angle * Math.PI / 180) * radius;
-            const y = Math.sin(angle * Math.PI / 180) * radius;
-            dot.style.transform = `translate(${x}px, ${y}px)`;
-        }
-
-        function formatTime(s) {
-            let m = Math.floor(s / 60);
-            s = Math.floor(s % 60);
-            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
-
-        function handleVerify() {
-            const spin = document.getElementById('spinner');
-            const check = document.getElementById('check-mark');
-            const txt = document.getElementById('verify-txt');
-            const screen = document.getElementById('verify-screen');
-            const main = document.getElementById('main-content');
-            audio.play().then(() => { audio.pause(); audio.currentTime = 0; }).catch(() => {});
-            spin.style.display = 'block'; txt.innerText = 'Verifying...';
-            setTimeout(() => {
-                spin.style.display = 'none'; check.style.display = 'block'; txt.innerText = 'Success!';
-                setTimeout(() => {
-                    screen.style.opacity = '0';
-                    setTimeout(() => {
-                        screen.style.display = 'none'; main.style.display = 'block';
-                        setTimeout(() => { main.style.opacity = '1'; audio.volume = 0.5; audio.play(); }, 50);
-                    }, 800);
-                }, 1000);
-            }, 1500);
-        }
-
-        function togglePlay() {
-            const icon = document.getElementById('playIcon');
-            if (audio.paused) { audio.play(); icon.className = 'fas fa-pause'; } 
-            else { audio.pause(); icon.className = 'fas fa-play'; }
-        }
-
-        audio.ontimeupdate = () => {
-            if (audio.duration) {
-                const percent = (audio.currentTime / audio.duration) * 100;
-                setProgress(percent);
-                currentTimeEl.innerText = formatTime(audio.currentTime);
-            }
-        };
-
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#ffffff" },
-                "opacity": { "value": 0.2, "random": true },
-                "size": { "value": 2, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#8a2be2", "opacity": 0.1, "width": 1 },
-                "move": { "enable": true, "speed": 1, "out_mode": "bounce" }
-            }
-        });
         setProgress(0);
     </script>
 </body>
