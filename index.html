@@ -33,7 +33,7 @@
 
         #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; }
 
-        /* Экран проверки */
+        /* Экран проверки Cloudflare */
         #verify-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(5, 0, 8, 0.95);
@@ -53,7 +53,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .cf-check { color: #c724b1; font-size: 20px; display: none; }
 
-        /* Контейнер био */
+        /* Контейнер био с белым свечением */
         .container {
             position: relative; z-index: 5;
             width: 90%; max-width: 380px;
@@ -64,36 +64,34 @@
             backdrop-filter: blur(20px);
             display: none; opacity: 0;
             transition: opacity 1s ease;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.15);
         }
 
-        /* КРУГОВОЙ ПЛЕЕР СО СКРИНШОТА */
+        /* Круговой плеер */
         .player-wrapper {
             position: relative;
             width: 240px; height: 240px;
-            margin: 0 auto 30px;
+            margin: 0 auto 10px;
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* SVG кольцо прогресса */
         .progress-ring {
             position: absolute;
             transform: rotate(-90deg);
-            filter: drop-shadow(0 0 8px rgba(199, 36, 177, 0.8));
+            filter: drop-shadow(0 0 8px rgba(255, 45, 149, 0.6));
         }
         .progress-ring__circle {
-            stroke-dasharray: 691; /* 2 * PI * 110 */
+            stroke-dasharray: 691;
             stroke-dashoffset: 691;
             transition: stroke-dashoffset 0.1s linear;
-            stroke: #ff2d95; /* Розовый как на фото */
+            stroke: #ff2d95;
         }
         .progress-ring__background {
             stroke: rgba(255, 255, 255, 0.1);
         }
 
-        /* Аватарка внутри кольца */
         .avatar-container {
-            width: 180px; height: 180px;
+            width: 175px; height: 175px;
             border-radius: 50%;
             overflow: hidden;
             border: 4px solid #050008;
@@ -101,7 +99,6 @@
         }
         .profile-pic { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Бегунок (точка) на кольце */
         .progress-dot {
             position: absolute;
             width: 12px; height: 12px;
@@ -110,11 +107,22 @@
             box-shadow: 0 0 15px #ff2d95;
             z-index: 3;
             left: 50%; top: 50%;
-            transform-origin: -110px center; /* Радиус смещения */
+            transform-origin: -110px center;
         }
 
-        /* Текстовая информация */
-        h1 { font-size: 16px; margin: 10px 0; letter-spacing: 1px; }
+        /* Таймер под аватаркой */
+        .time-display {
+            font-size: 9px;
+            color: #ffffff;
+            margin-bottom: 25px;
+            opacity: 0.8;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 1px;
+        }
+
+        h1 { font-size: 16px; margin: 10px 0 5px; letter-spacing: 1px; }
         .artist { font-size: 8px; color: #c48efd; margin-bottom: 30px; opacity: 0.8; }
 
         /* Кнопки управления */
@@ -122,15 +130,15 @@
             display: flex; align-items: center; justify-content: center; gap: 30px;
         }
         .play-btn {
-            width: 70px; height: 70px; border-radius: 50%;
+            width: 65px; height: 65px; border-radius: 50%;
             background: linear-gradient(135deg, #8a2be2, #ff2d95);
-            border: none; color: white; font-size: 24px; cursor: pointer;
+            border: none; color: white; font-size: 22px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.4);
             transition: transform 0.2s;
         }
-        .play-btn:active { transform: scale(0.9); }
-        .nav-icon { color: white; font-size: 20px; opacity: 0.8; cursor: pointer; border: none; background: none; }
+        .play-btn:active { transform: scale(0.95); }
+        .nav-icon { color: white; font-size: 18px; opacity: 0.6; cursor: pointer; border: none; background: none; }
 
     </style>
 </head>
@@ -159,8 +167,8 @@
     <div class="container" id="main-content">
         <div class="player-wrapper">
             <svg class="progress-ring" width="240" height="240">
-                <circle class="progress-ring__background" stroke-width="6" fill="transparent" r="110" cx="120" cy="120"/>
-                <circle id="circle-progress" class="progress-ring__circle" stroke-width="6" fill="transparent" r="110" cx="120" cy="120" stroke-linecap="round"/>
+                <circle class="progress-ring__background" stroke-width="5" fill="transparent" r="110" cx="120" cy="120"/>
+                <circle id="circle-progress" class="progress-ring__circle" stroke-width="5" fill="transparent" r="110" cx="120" cy="120" stroke-linecap="round"/>
             </svg>
             
             <div id="dot" class="progress-dot"></div>
@@ -168,6 +176,12 @@
             <div class="avatar-container">
                 <img src="https://raw.githubusercontent.com/DmitryLegend/bio/main/image.png" alt="Avatar" class="profile-pic">
             </div>
+        </div>
+
+        <div class="time-display">
+            <span id="current-time">0:00</span>
+            <span>/</span>
+            <span id="duration">0:00</span>
         </div>
         
         <h1>DmitryLegend</h1>
@@ -191,16 +205,22 @@
         const audio = document.getElementById('myAudio');
         const circle = document.getElementById('circle-progress');
         const dot = document.getElementById('dot');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
         const radius = circle.r.baseVal.value;
         const circumference = 2 * Math.PI * radius;
 
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
 
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
         function setProgress(percent) {
             const offset = circumference - (percent / 100 * circumference);
             circle.style.strokeDashoffset = offset;
-            
-            // Вращение точки
             const angle = (percent * 3.6) - 90;
             dot.style.transform = `translate(-50%, -50%) rotate(${angle}deg) translateX(110px) rotate(${-angle}deg)`;
         }
@@ -212,7 +232,6 @@
             const screen = document.getElementById('verify-screen');
             const main = document.getElementById('main-content');
 
-            // "Прогрев" аудио для обхода блокировки браузеров
             audio.play().then(() => {
                 audio.pause();
                 audio.currentTime = 0;
@@ -252,23 +271,27 @@
             }
         }
 
+        audio.onloadedmetadata = () => {
+            durationEl.innerText = formatTime(audio.duration);
+        };
+
         audio.ontimeupdate = () => {
             if (audio.duration) {
                 const percent = (audio.currentTime / audio.duration) * 100;
                 setProgress(percent);
+                currentTimeEl.innerText = formatTime(audio.currentTime);
             }
         };
 
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 40 },
+                "number": { "value": 35 },
                 "color": { "value": "#ffffff" },
-                "opacity": { "value": 0.2 },
-                "line_linked": { "enable": true, "distance": 150, "color": "#c724b1", "opacity": 0.1 }
+                "opacity": { "value": 0.15 },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ff2d95", "opacity": 0.1 }
             }
         });
         
-        // Инициализация точки в начальной позиции
         setProgress(0);
     </script>
 </body>
